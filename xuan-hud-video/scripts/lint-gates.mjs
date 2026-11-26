@@ -97,6 +97,9 @@ for (const file of TARGET_DIRS.flatMap(walk)) {
         issues.push(`${file}:${ln} RGB [${r},${g},${b}] 超出 Chrome 四色白名单（仅限橙/蓝/红/绿 + 中性灰白）`);
       }
     }
+    if (/\bborder(Left|Right)\s*:/.test(line)) {
+      issues.push(`${file}:${ln} 严禁在组件单侧边缘加装饰竖线（borderLeft/borderRight）`);
+    }
     if (/\bMath\.sin\s*\(/.test(line)) {
       issues.push(`${file}:${ln} 禁止使用 Math.sin 持续漂浮`);
     }

@@ -112,8 +112,6 @@ export const HeroMetricSpotlight: React.FC<{
                 color: '#D4DFEE',
                 lineHeight: 1.62,
                 letterSpacing: 1.2,
-                paddingLeft: 42,
-                borderLeft: '1.5px solid rgba(255,255,255,0.12)',
               }}
             >
               {caption}
