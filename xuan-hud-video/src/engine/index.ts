@@ -4,6 +4,8 @@ export * from './Sfx';
 export * from './PhysicalGlass3D';
 export * from './Stage';
 export * from './CameraRig';
+export * from './SceneShell';
+export * from './DynamicTwoStage';
 export * from './FlipSlab3D';
 export * from './srt';
 export * from './catalog';

@@ -6,12 +6,12 @@ export interface PhysicalGlass3DProps {
   children: React.ReactNode;
   /** 0..1 连续激活权重，驱动侧壁导光与顶面棱光 */
   active?: number;
-  /** 主强调色 RGB，默认琥珀金 [245, 166, 35] */
+  /** Chrome 四色点睛 RGB（橙/蓝/红/绿），默认橙 [245, 166, 35] */
   accentRgb?: Rgb;
   radius?: number;
   /** 实体板材垂直厚度像素（默认 15px，0 表示平面） */
   slabPx?: number;
-  /** 侧向挤出偏移像素（正值露右侧壁，负值露左侧壁，让 2.5D 斜切厚度一眼可见） */
+  /** 侧向挤出偏移像素（正值露右侧壁，负值露左侧壁） */
   extrudeX?: number;
   padding?: React.CSSProperties['padding'];
   /** 扫光速度（帧推进系数），设 0 关闭动态扫光 */
@@ -22,13 +22,10 @@ export interface PhysicalGlass3DProps {
 }
 
 /**
- * 真·双层实体挤出 2.5D/3D 磨砂玻璃砖（PhysicalGlass3D v2.1）：
- * 用明确的四层明暗物理结构表现“看得见的板材厚度”，绝不用一条淡线糊弄：
- * 1. Ground Shadow（舞台地面落影）：深距悬浮投影，把整块厚砖托离背景；
- * 2. Extruded Bevel Sidewall（高辨识度实体厚侧壁）：多层无缝阶梯挤出 `(extrudeX, slabPx)`，
- *    采用明显亮于暗背景的金属冷钢/主题色导光渐变 + 拐角高光带 + 清晰底棱线；
- * 3. Chamfer Rim（顶面与侧壁交界亮棱）：顶面玻璃底边与侧壁顶边形成清晰折角分界；
- * 4. Etched Top Face（顶面磨砂玻璃）：内置噪点层 + 置于文字上方（zIndex: 10）的折射扫光。
+ * 抗锯齿平滑 2.5D/3D 磨砂玻璃砖（PhysicalGlass3D v2.2）：
+ * 1. 彻底消除 2.67px 阶梯层叠圆角锯齿：将厚侧壁从 6 层粗阶梯改为逐像素平滑挤出（每步 ≤ 1px）+ 外层 `outline: 1px solid transparent` 强制 Chromium 在 3D rotateX/rotateY 变换下启用边缘抗锯齿插值；
+ * 2. 纯中性无色偏混色基灰（R=G=B），确保 Chrome 四色（橙/蓝/红/绿）在任意激活度下绝不偏紫或串色；
+ * 3. 内置磨砂噪点层 + 顶部折射高光棱线 + 强制置于文字上方（zIndex: 10）的折射扫光层。
  */
 export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
   children,
@@ -47,13 +44,11 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
   const a = clamp01(active);
   const [ar, ag, ab] = accentRgb;
 
-  // 顶面玻璃外框：采用纯中性无色偏灰（R=G=B）与 accentRgb 混合，彻底杜绝“红 + 蓝灰 = 紫色”光学偏色！
   const topBorderRgb = mixRgb([206, 206, 206], accentRgb, 0.28 + a * 0.72);
   const topBorderColor = topBorderRgb
     .replace('rgb(', 'rgba(')
     .replace(')', `, ${(0.48 + a * 0.48).toFixed(3)})`);
 
-  // 实体侧壁（厚度切面）：同样用纯中性灰作为基底，确保红/橙/绿/蓝四色无论在何种激活度下都保持绝对纯正色相
   const wallHighlight = mixRgb([106, 106, 106], accentRgb, 0.26 + a * 0.64);
   const wallBody = mixRgb([62, 62, 62], [Math.round(ar * 0.72), Math.round(ag * 0.68), Math.round(ab * 0.62)], 0.24 + a * 0.62);
   const wallShade = mixRgb([36, 36, 36], [Math.round(ar * 0.44), Math.round(ag * 0.4), Math.round(ab * 0.36)], 0.22 + a * 0.56);
@@ -68,9 +63,8 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
         ? ((frame * sheenSpeed) % 260) - 70
         : -999;
 
-  // 6 层密集微步挤出，确保任意斜角 `(extrudeX, slabPx)` 圆角侧壁 100% 实心平滑无锯齿断层
-  const steps = slabPx > 0 ? 6 : 0;
-
+  // 逐像素平滑步进（每步 ≤ 1px），彻底消除圆角与斜向侧壁的阶梯状锯齿
+  const steps = slabPx > 0 ? Math.max(slabPx, Math.abs(extrudeX), 1) : 0;
   const padLeft = extrudeX < 0 ? -extrudeX : 0;
   const padRight = extrudeX > 0 ? extrudeX : 0;
 
@@ -83,6 +77,10 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
         paddingBottom: slabPx > 0 ? slabPx : 0,
         paddingLeft: padLeft,
         paddingRight: padRight,
+        // 强制 Chromium/Skia 在 3D rotateX/rotateY 纹理边界启用亚像素抗锯齿，消除斜边毛刺
+        outline: '1px solid transparent',
+        WebkitBackfaceVisibility: 'hidden',
+        backfaceVisibility: 'hidden',
         ...style,
       }}
     >
@@ -98,8 +96,8 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
             bottom: 0,
             borderRadius: radius,
             boxShadow: [
-              `0 28px 54px -6px rgba(0, 0, 0, 0.88)`,
-              `0 10px 20px rgba(0, 0, 0, 0.75)`,
+              '0 28px 54px -6px rgba(0, 0, 0, 0.88)',
+              '0 10px 20px rgba(0, 0, 0, 0.75)',
               `0 8px ${(42 * a).toFixed(0)}px rgba(${ar}, ${ag}, ${ab}, ${(0.28 * a).toFixed(3)})`,
             ].join(', '),
             pointerEvents: 'none',
@@ -108,7 +106,7 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
         />
       )}
 
-      {/* Layer 1: 实心连续挤出 2.5D 厚侧壁（左右正负 extrudeX 完全镜像对称） */}
+      {/* Layer 1: 逐像素平滑挤出 2.5D 厚侧壁（每步 ≤ 1px，零阶梯圆角锯齿） */}
       {Array.from({ length: steps }).map((_, idx) => {
         const t = (idx + 1) / steps;
         const isBottomEdge = idx === steps - 1;
@@ -132,6 +130,7 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
               borderStyle: 'solid',
               borderColor: wallBottomRim,
               boxShadow: isBottomEdge ? 'inset 0 -2px 4px rgba(0, 0, 0, 0.45)' : 'none',
+              outline: '1px solid transparent',
               pointerEvents: 'none',
               zIndex: 1,
             }}
@@ -157,13 +156,13 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
           boxShadow: [
             `inset 0 1.5px 0 rgba(255, 255, 255, ${(0.45 + a * 0.18).toFixed(3)})`,
             `inset 0 -1.5px 0 rgba(255, 255, 255, ${(0.18 + a * 0.2).toFixed(3)})`,
-            `0 2px 3px rgba(0, 0, 0, 0.55)`,
+            '0 2px 3px rgba(0, 0, 0, 0.55)',
           ].join(', '),
+          outline: '1px solid transparent',
           textShadow: '0 1px 2px rgba(4, 7, 14, 0.6)',
           zIndex: 2,
         }}
       >
-        {/* Plane A: 磨砂微细噪点层 */}
         <div
           aria-hidden
           style={{
@@ -178,7 +177,6 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
           }}
         />
 
-        {/* Plane B: 顶部折射高光棱线 */}
         <svg
           aria-hidden
           width="100%"
@@ -197,12 +195,10 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
           <rect x="0" y="0" width="100%" height="2" fill={`url(#rim-${uid})`} />
         </svg>
 
-        {/* Plane C: 实际前景内容与文字 */}
         <div style={{ position: 'relative', zIndex: 3, width: '100%', height: '100%', boxSizing: 'border-box' }}>
           {children}
         </div>
 
-        {/* Plane D: 强制顶层折射反光扫光层（zIndex: 10，覆盖在文字正上方） */}
         {sweepPos > -500 && (
           <div
             aria-hidden

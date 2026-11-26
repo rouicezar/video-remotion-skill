@@ -60,6 +60,7 @@ export const CameraRig: React.FC<{
           height: '100%',
           transformOrigin: 'center center',
           transform: `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) scale(${scale.toFixed(4)}) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`,
+          outline: '1px solid transparent',
           willChange: 'transform',
         }}
       >

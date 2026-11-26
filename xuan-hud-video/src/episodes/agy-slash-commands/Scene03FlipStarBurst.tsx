@@ -37,6 +37,8 @@ export const Scene03FlipStarBurst: React.FC = () => {
   const starExpand = clamp01(easeInOutCubic((frame - rel(36.35)) / 18));
   const workersPopAt = rel(39.1);
   const togetherGlow = clamp01(easeInOutCubic((frame - rel(41.3)) / 14));
+  // 末尾 12 帧平滑推进收束，无缝接力 Scene03b（杜绝帧间硬切）
+  const exitDive = clamp01(easeInOutCubic((frame - (SCENE03_FRAMES - 12)) / 12));
 
   const sfxEvents = [
     { kind: 'pop' as const, at: rel(25.3) },
@@ -126,6 +128,7 @@ export const Scene03FlipStarBurst: React.FC = () => {
         { at: flipAt, dur: 16, scale: 1.04, x: 0, y: 0, rotateX: 2 },
         { at: rel(36.35), dur: 18, scale: 1, x: 0, y: 0, rotateX: 4 },
         { at: rel(41.3), dur: 16, scale: 1.05, x: 0, y: -8, rotateX: 5 },
+        { at: SCENE03_FRAMES - 12, dur: 12, scale: 1.18, x: 0, y: 0, rotateX: 2 },
       ]}
     >
       <SfxGroup events={sfxEvents} />
@@ -140,7 +143,7 @@ export const Scene03FlipStarBurst: React.FC = () => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          opacity: enterP,
+          opacity: enterP * (1 - exitDive * 0.72),
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
