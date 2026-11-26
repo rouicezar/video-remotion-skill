@@ -47,17 +47,17 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
   const a = clamp01(active);
   const [ar, ag, ab] = accentRgb;
 
-  // 顶面玻璃外框：清脆明亮的倒角线，把“顶面”与“下方厚度壁”明确切开
-  const topBorderRgb = mixRgb([198, 214, 238], accentRgb, 0.2 + a * 0.8);
+  // 顶面玻璃外框：采用纯中性无色偏灰（R=G=B）与 accentRgb 混合，彻底杜绝“红 + 蓝灰 = 紫色”光学偏色！
+  const topBorderRgb = mixRgb([206, 206, 206], accentRgb, 0.28 + a * 0.72);
   const topBorderColor = topBorderRgb
     .replace('rgb(', 'rgba(')
     .replace(')', `, ${(0.48 + a * 0.48).toFixed(3)})`);
 
-  // 实体侧壁（厚度切面）：比顶面深色玻璃（#111724）和舞台底色（#0C1018）亮出清晰受光台阶！
-  const wallHighlight = mixRgb([96, 114, 148], accentRgb, 0.18 + a * 0.68);
-  const wallBody = mixRgb([58, 70, 96], [Math.round(ar * 0.72), Math.round(ag * 0.64), Math.round(ab * 0.52)], 0.16 + a * 0.66);
-  const wallShade = mixRgb([34, 42, 60], [Math.round(ar * 0.42), Math.round(ag * 0.38), Math.round(ab * 0.32)], 0.14 + a * 0.58);
-  const wallBottomRim = mixRgb([148, 168, 204], accentRgb, 0.2 + a * 0.75)
+  // 实体侧壁（厚度切面）：同样用纯中性灰作为基底，确保红/橙/绿/蓝四色无论在何种激活度下都保持绝对纯正色相
+  const wallHighlight = mixRgb([106, 106, 106], accentRgb, 0.26 + a * 0.64);
+  const wallBody = mixRgb([62, 62, 62], [Math.round(ar * 0.72), Math.round(ag * 0.68), Math.round(ab * 0.62)], 0.24 + a * 0.62);
+  const wallShade = mixRgb([36, 36, 36], [Math.round(ar * 0.44), Math.round(ag * 0.4), Math.round(ab * 0.36)], 0.22 + a * 0.56);
+  const wallBottomRim = mixRgb([156, 156, 156], accentRgb, 0.28 + a * 0.68)
     .replace('rgb(', 'rgba(')
     .replace(')', `, ${(0.55 + a * 0.38).toFixed(3)})`);
 

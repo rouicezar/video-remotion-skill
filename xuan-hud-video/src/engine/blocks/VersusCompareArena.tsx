@@ -70,7 +70,7 @@ export const VersusCompareArena: React.FC<{
         }}
       >
         <PhysicalGlass3D
-          active={0.55 * (1 - winShift * 0.5)}
+          active={0.62 * (1 - winShift * 0.3)}
           accentRgb={loseRgb}
           radius={28}
           slabPx={15}
@@ -84,13 +84,13 @@ export const VersusCompareArena: React.FC<{
                 style={{
                   fontFamily: FONTS.mono,
                   fontSize: 24,
-                  color: mixRgb([210, 175, 175], loseRgb, 0.65),
+                  color: mixRgb([214, 198, 196], loseRgb, 0.78),
                   letterSpacing: 2,
                 }}
               >
                 {left.badge}
               </span>
-              <span style={{ fontSize: 26, color: mixRgb([190, 160, 160], loseRgb, 0.7) }}>✕</span>
+              <span style={{ fontSize: 26, color: mixRgb([214, 198, 196], loseRgb, 0.82) }}>✕</span>
             </div>
 
             <div style={{ fontSize: 44, fontWeight: WEIGHTS.regular, color: COLORS.white, letterSpacing: 1.5 }}>
@@ -106,8 +106,8 @@ export const VersusCompareArena: React.FC<{
                     style={{
                       padding: '18px 24px',
                       borderRadius: 16,
-                      backgroundColor: 'rgba(234, 67, 53, 0.06)',
-                      border: `1.5px solid ${mixRgb([95, 80, 88], loseRgb, 0.45)}`,
+                      backgroundColor: 'rgba(234, 67, 53, 0.08)',
+                      border: `1.5px solid ${mixRgb([92, 92, 92], loseRgb, 0.52)}`,
                       fontSize: 29,
                       fontWeight: WEIGHTS.light,
                       color: '#E2E8F2',
