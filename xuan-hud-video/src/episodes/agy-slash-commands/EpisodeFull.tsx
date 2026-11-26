@@ -9,12 +9,10 @@ import { SCENE02_END_SEC, SCENE02_FRAMES, SCENE02_START_SEC, Scene02SwarmFanOut 
 import { SCENE03_END_SEC, SCENE03_FRAMES, SCENE03_START_SEC, Scene03FlipStarBurst } from './Scene03FlipStarBurst';
 import {
   SCENE03B_END_SEC,
-  SCENE03B_FRAMES,
   SCENE03B_START_SEC,
   Scene03bSwarmBoardVerifier,
 } from './Scene03bSwarmBoardVerifier';
 import {
-  AGY_SCENE04_FRAMES,
   AgySwarmPromptContent,
   SCENE04_END_SEC,
   SCENE04_START_SEC,
@@ -72,23 +70,23 @@ export const AgyEpisodeFull: React.FC = () => {
     >
       <Audio src={staticFile('assets_agy/agy_commands.wav')} volume={1} />
 
-      <Sequence from={0} durationInFrames={SCENE01_FRAMES}>
+      <Sequence from={0} durationInFrames={s2From}>
         <Scene01HookDeck />
       </Sequence>
 
-      <Sequence from={s2From} durationInFrames={SCENE02_FRAMES}>
+      <Sequence from={s2From} durationInFrames={s3From - s2From}>
         <Scene02SwarmFanOut />
       </Sequence>
 
-      <Sequence from={s3From} durationInFrames={SCENE03_FRAMES}>
+      <Sequence from={s3From} durationInFrames={s3bFrom - s3From}>
         <Scene03FlipStarBurst />
       </Sequence>
 
-      <Sequence from={s3bFrom} durationInFrames={SCENE03B_FRAMES}>
+      <Sequence from={s3bFrom} durationInFrames={s4From - s3bFrom}>
         <Scene03bSwarmBoardVerifier />
       </Sequence>
 
-      <Sequence from={s4From} durationInFrames={AGY_SCENE04_FRAMES}>
+      <Sequence from={s4From} durationInFrames={AGY_EPISODE_TOTAL_FRAMES - s4From}>
         <AgySwarmPromptContent />
       </Sequence>
     </Stage>
