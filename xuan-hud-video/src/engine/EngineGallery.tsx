@@ -5,11 +5,6 @@ import { COLORS, FONTS, WEIGHTS } from '../design/tokens';
 import { CRISP_SPRING, mixRgb, PhysicalGlass3D, Stage } from './index';
 import { AgySwarmPromptScene } from '../episodes/agy-slash-commands/Scene04SwarmPrompt';
 
-/**
- * 引擎组件画廊（EngineGallery）：
- * Frame 0..59   ：三态 `<PhysicalGlass3D>` 材质与多主题强调色对比（静息 / 半激活 / 满激活蚀刻扫光）
- * Frame 60..476 ：单源示范章节 `AgySwarmPromptScene`（可抽帧验收各微拍点亮态）
- */
 export const ENGINE_GALLERY_FRAMES = 480;
 
 const GlassMaterialSpecimen: React.FC = () => {
@@ -21,20 +16,24 @@ const GlassMaterialSpecimen: React.FC = () => {
       num: '01',
       title: '静息磨砂态',
       tag: 'ACTIVE 0.0',
-      metric: '6px',
-      unit: '厚底切边',
-      active: 0,
-      accent: [245, 166, 35] as [number, number, number],
+      metric: '16px',
+      unit: '实体侧壁',
+      active: 0.08,
+      accent: [148, 178, 232] as [number, number, number],
+      extrudeX: -8,
+      tiltY: 5,
       icon: <GeminiLogo size={42} />,
     },
     {
       num: '02',
-      title: '琥珀聚焦态',
+      title: '琥珀导光态',
       tag: 'ACTIVE 1.0',
-      metric: 'z-10',
-      unit: '顶层扫光',
+      metric: '2.5D',
+      unit: '导光厚底座',
       active: 1,
       accent: [245, 166, 35] as [number, number, number],
+      extrudeX: 0,
+      tiltY: 0,
       icon: <GeminiLogo size={42} />,
     },
     {
@@ -42,9 +41,11 @@ const GlassMaterialSpecimen: React.FC = () => {
       title: '异主题换肤',
       tag: 'EMERALD THEME',
       metric: '24px+',
-      unit: '零小字底线',
-      active: 0.9,
+      unit: '细体零粘连',
+      active: 0.92,
       accent: [52, 211, 153] as [number, number, number],
+      extrudeX: 9,
+      tiltY: -6,
       icon: <PythonLogo size={42} />,
     },
   ];
@@ -54,29 +55,32 @@ const GlassMaterialSpecimen: React.FC = () => {
       stepIndex={2}
       totalSteps={4}
       chapterLabel="ENGINE GALLERY · PHYSICAL GLASS 3D"
-      subtitles={[{ startSec: 0, endSec: 2, zh: '真蚀刻 3D 磨砂玻璃 · 噪点层 + 文字上方折射扫光' }]}
+      subtitles={[{ startSec: 0, endSec: 2, zh: '真 2.5D 实体挤出侧壁 · 3:2 纵向三段舒展比例' }]}
       theme={{ watermark: 'STUDIO' }}
     >
       <div
         style={{
           width: '100%',
+          maxWidth: 1620,
           height: '100%',
+          margin: '0 auto',
+          padding: '48px 0 42px',
+          boxSizing: 'border-box',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center',
-          gap: 40,
+          justifyContent: 'space-between',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: 24 }}>
-          <span style={{ fontFamily: FONTS.display, fontSize: 62, fontWeight: WEIGHTS.light, color: COLORS.white, letterSpacing: 1 }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 28 }}>
+          <span style={{ fontFamily: FONTS.display, fontSize: 68, fontWeight: WEIGHTS.light, color: COLORS.white, letterSpacing: 1 }}>
             PhysicalGlass3D
           </span>
-          <span style={{ fontSize: 30, fontWeight: WEIGHTS.light, color: '#9BA8BE', letterSpacing: 2 }}>
-            材质基线与多主题换肤
+          <span style={{ fontSize: 32, fontWeight: WEIGHTS.light, color: '#9BA8BE', letterSpacing: 2.5 }}>
+            真 2.5D 实体厚侧壁与黄金空间比例
           </span>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32, perspective: 1400 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 44, perspective: 1500 }}>
           {cards.map((c, i) => {
             const p = spring({ frame: Math.max(0, frame - i * 4), fps, config: CRISP_SPRING });
             return (
@@ -84,17 +88,19 @@ const GlassMaterialSpecimen: React.FC = () => {
                 key={c.num}
                 style={{
                   opacity: p,
-                  transform: `translate3d(0, ${((1 - p) * 26).toFixed(1)}px, 0) rotateY(${(i - 1) * -5}deg)`,
+                  transform: `translate3d(0, ${((1 - p) * 26).toFixed(1)}px, 0) rotateX(6deg) rotateY(${c.tiltY}deg)`,
                 }}
               >
                 <PhysicalGlass3D
                   active={c.active}
                   accentRgb={c.accent}
-                  radius={26}
-                  padding="38px 36px"
+                  radius={28}
+                  slabPx={16}
+                  extrudeX={c.extrudeX}
+                  padding="50px 44px 56px"
                   sheenPulse={0.52}
                 >
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: 340 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span
                         style={{
@@ -116,7 +122,7 @@ const GlassMaterialSpecimen: React.FC = () => {
                       <span
                         style={{
                           fontFamily: FONTS.display,
-                          fontSize: 78,
+                          fontSize: 82,
                           fontWeight: WEIGHTS.light,
                           fontVariantNumeric: 'tabular-nums',
                           letterSpacing: -1,
@@ -135,6 +141,11 @@ const GlassMaterialSpecimen: React.FC = () => {
               </div>
             );
           })}
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 25, fontWeight: WEIGHTS.light, color: '#7D8CA6', letterSpacing: 2 }}>
+          <span>顶面亮棱倒角 · 16px 连续挤出受光侧壁 · 底部悬浮落影</span>
+          <span>3:2 画布黄金三段纵深</span>
         </div>
       </div>
     </Stage>
