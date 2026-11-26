@@ -25,7 +25,7 @@ export const MicroGlyph: React.FC<{ kind: MicroGlyphKind; active: number; accent
     return (
       <svg width="46" height="46" viewBox="0 0 46 46">
         <rect x="6" y="6" width="34" height="34" rx="8" fill="none" stroke={stroke} strokeWidth="2.2" />
-        <path d="M15 24 L21 30 L32 17" fill="none" stroke={mixRgb([180, 210, 195], [52, 211, 153], active)} strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M15 24 L21 30 L32 17" fill="none" stroke={mixRgb([180, 210, 195], [52, 168, 83], active)} strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     );
   }

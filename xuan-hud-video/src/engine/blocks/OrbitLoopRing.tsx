@@ -49,7 +49,7 @@ export const OrbitLoopRing: React.FC<{
   solvedAt,
   solvedLabel = '闭环收敛 ✓',
   accentRgb = [245, 166, 35],
-  solvedRgb = [52, 211, 153],
+  solvedRgb = [52, 168, 83],
   sfxMuted = false,
 }) => {
   const frame = useCurrentFrame();

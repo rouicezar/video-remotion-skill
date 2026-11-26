@@ -34,7 +34,7 @@ export const DarkCodeTerminal: React.FC<{
   lines,
   outputSummary,
   accentRgb = [245, 166, 35],
-  passRgb = [52, 211, 153],
+  passRgb = [52, 168, 83],
   sfxMuted = false,
 }) => {
   const frame = useCurrentFrame();

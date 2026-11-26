@@ -39,7 +39,7 @@ export const StarBurstTopology: React.FC<{
   burstAt,
   syncGlow,
   accentRgb = [245, 166, 35],
-  syncRgb = [52, 211, 153],
+  syncRgb = [52, 168, 83],
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();

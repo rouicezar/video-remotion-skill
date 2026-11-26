@@ -86,7 +86,7 @@ export const OfficialCropWindow: React.FC<{
               <span>{domainLabel}</span>
             </div>
 
-            <span style={{ fontFamily: FONTS.mono, fontSize: 24, fontWeight: WEIGHTS.regular, color: mixRgb([132, 224, 178], [52, 211, 153], focus) }}>
+            <span style={{ fontFamily: FONTS.mono, fontSize: 24, fontWeight: WEIGHTS.regular, color: mixRgb([132, 224, 178], [52, 168, 83], focus) }}>
               ● {badgeText}
             </span>
           </div>

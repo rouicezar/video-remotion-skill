@@ -25,7 +25,7 @@ export const FunnelFilterStack: React.FC<{
   layers,
   output,
   accentRgb = [245, 166, 35],
-  resultRgb = [52, 211, 153],
+  resultRgb = [52, 168, 83],
   sfxMuted = false,
 }) => {
   const frame = useCurrentFrame();

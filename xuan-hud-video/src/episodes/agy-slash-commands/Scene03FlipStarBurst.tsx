@@ -62,7 +62,7 @@ export const Scene03FlipStarBurst: React.FC = () => {
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: 420 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span style={{ fontSize: 42, fontWeight: WEIGHTS.regular, color: COLORS.white, letterSpacing: 1.5 }}>单 Agent 串行排队</span>
-          <span style={{ fontFamily: FONTS.mono, fontSize: 26, fontWeight: WEIGHTS.regular, color: mixRgb([176, 190, 214], [252, 146, 146], ctxBoom), padding: '8px 22px', borderRadius: 12, border: `1.5px solid ${mixRgb([120, 136, 164], [235, 87, 87], ctxBoom)}` }}>
+          <span style={{ fontFamily: FONTS.mono, fontSize: 26, fontWeight: WEIGHTS.regular, color: mixRgb([176, 190, 214], [252, 146, 146], ctxBoom), padding: '8px 22px', borderRadius: 12, border: `1.5px solid ${mixRgb([120, 136, 164], [234, 67, 53], ctxBoom)}` }}>
             CONTEXT · {ctxPct}%
           </span>
         </div>
@@ -97,7 +97,7 @@ export const Scene03FlipStarBurst: React.FC = () => {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div style={{ height: 12, borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
-            <div style={{ width: `${ctxPct}%`, height: '100%', borderRadius: 8, backgroundColor: mixRgb([245, 166, 35], [235, 87, 87], ctxBoom) }} />
+            <div style={{ width: `${ctxPct}%`, height: '100%', borderRadius: 8, backgroundColor: mixRgb([245, 166, 35], [234, 67, 53], ctxBoom) }} />
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 26, fontWeight: WEIGHTS.light, color: mixRgb([164, 178, 202], [255, 168, 168], ctxBoom) }}>
             <span>逐个串行阻塞</span>
@@ -146,7 +146,7 @@ export const Scene03FlipStarBurst: React.FC = () => {
           <div style={{ fontSize: 48, fontWeight: WEIGHTS.light, color: COLORS.white, letterSpacing: 2 }}>
             {frame < flipAt + 8 ? '传统单线程痛点' : '多 Agent 蜂群并发拓扑'}
           </div>
-          <span style={{ fontFamily: FONTS.mono, fontSize: 25, color: mixRgb([156, 170, 196], [52, 211, 153], togetherGlow), letterSpacing: 2 }}>
+          <span style={{ fontFamily: FONTS.mono, fontSize: 25, color: mixRgb([156, 170, 196], [52, 168, 83], togetherGlow), letterSpacing: 2 }}>
             {frame < flipAt + 8 ? 'SERIAL BOTTLENECK' : 'COORDINATOR + 4 NAMED WORKERS'}
           </span>
         </div>

@@ -29,8 +29,8 @@ export const VersusCompareArena: React.FC<{
   right,
   rightEnterAt,
   winAt,
-  loseRgb = [235, 87, 87],
-  winRgb = [52, 211, 153],
+  loseRgb = [234, 67, 53],
+  winRgb = [52, 168, 83],
   sfxMuted = false,
 }) => {
   const frame = useCurrentFrame();
@@ -106,7 +106,7 @@ export const VersusCompareArena: React.FC<{
                     style={{
                       padding: '18px 24px',
                       borderRadius: 16,
-                      backgroundColor: 'rgba(235, 87, 87, 0.06)',
+                      backgroundColor: 'rgba(234, 67, 53, 0.06)',
                       border: `1.5px solid ${mixRgb([95, 80, 88], loseRgb, 0.45)}`,
                       fontSize: 29,
                       fontWeight: WEIGHTS.light,

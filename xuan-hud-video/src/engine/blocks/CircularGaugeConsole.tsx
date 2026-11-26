@@ -38,7 +38,7 @@ export const CircularGaugeConsole: React.FC<{
   runningStatus = '自动死磕验证中',
   doneStatus = '全部达标 · 自动收工 ✓',
   accentRgb = [245, 166, 35],
-  passRgb = [52, 211, 153],
+  passRgb = [52, 168, 83],
   sfxMuted = false,
 }) => {
   const frame = useCurrentFrame();

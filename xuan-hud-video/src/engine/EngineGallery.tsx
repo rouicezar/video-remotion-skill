@@ -159,7 +159,7 @@ export const EngineGallery: React.FC = () => (
             { label: '多端同步共享', value: '5 人家庭组', at: 32 },
             { label: '综合年省成本', value: '¥2,400+', at: 42 },
           ]}
-          accentRgb={[96, 165, 250]}
+          accentRgb={[66, 133, 244]}
           sfxMuted
         />
       </GallerySlide>

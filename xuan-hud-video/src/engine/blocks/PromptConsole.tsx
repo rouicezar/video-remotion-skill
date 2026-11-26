@@ -313,7 +313,7 @@ export const PromptConsole: React.FC<PromptConsoleProps> = ({
               const plP = spring({ frame: Math.max(0, frame - planBadge.at), fps, config: CRISP_SPRING });
               const glow = clamp01(beatHighlight(frame, planBadge.at, planBadge.at + 45));
               const isGreen = (planBadge.tone ?? 'green') === 'green';
-              const badgeRgb: Rgb = isGreen ? [52, 211, 153] : accentRgb;
+              const badgeRgb: Rgb = isGreen ? [52, 168, 83] : accentRgb;
               return (
                 <KeycapPill accentRgb={badgeRgb} active={0.65 + glow * 0.35} enterP={plP} padding="14px 34px">
                   <span style={{ color: mixRgb([242, 248, 252], badgeRgb, 0.32), fontWeight: WEIGHTS.regular }}>

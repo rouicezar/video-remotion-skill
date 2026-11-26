@@ -18,9 +18,20 @@ export const COLORS = {
   textSecondary: '#9aa3b2',
   textMuted: '#636c7d',
 
-  red: '#ef5350',
-  green: '#34d399',
+  // Chrome 四色克制体系（橙、蓝、红、绿，严禁引入第 5 种彩色）
+  orange: '#f5a623',
+  blue: '#4285f4',
+  red: '#ea4335',
+  green: '#34a853',
   white: '#ffffff',
+} as const;
+
+/** 全项目唯一彩色 RGB 真相源：严格限定 Chrome 图标 4 色（橙、蓝、红、绿），其余仅用中性灰白黑 */
+export const CHROME_RGB = {
+  orange: [245, 166, 35] as [number, number, number],
+  blue: [66, 133, 244] as [number, number, number],
+  red: [234, 67, 53] as [number, number, number],
+  green: [52, 168, 83] as [number, number, number],
 } as const;
 
 export const FONTS = {

@@ -1,4 +1,4 @@
-import { FONTS, WEIGHTS } from '../../design/tokens';
+import { CHROME_RGB, FONTS, WEIGHTS } from '../../design/tokens';
 import { Rgb } from '../motion';
 
 /**
@@ -210,11 +210,11 @@ export interface ThemeSpec {
   watermark?: string;
 }
 
+/** 跨赛道主题色板：严格仅从 Chrome 四色（橙、蓝、红、绿）中组合，严禁出现紫色等第 5 种彩色 */
 export const THEME_PALETTES: Record<string, ThemeSpec> = {
-  amberStudio: { id: 'amberStudio', accentRgb: [245, 166, 35], secondaryRgb: [52, 211, 153], dangerRgb: [235, 87, 87] },
-  emeraldTech: { id: 'emeraldTech', accentRgb: [52, 211, 153], secondaryRgb: [96, 165, 250], dangerRgb: [239, 68, 68] },
-  cobaltPrecision: { id: 'cobaltPrecision', accentRgb: [96, 165, 250], secondaryRgb: [245, 166, 35], dangerRgb: [244, 63, 94] },
-  violetCreative: { id: 'violetCreative', accentRgb: [167, 139, 250], secondaryRgb: [52, 211, 153], dangerRgb: [251, 113, 133] },
+  chromeOrange: { id: 'chromeOrange', accentRgb: CHROME_RGB.orange, secondaryRgb: CHROME_RGB.green, dangerRgb: CHROME_RGB.red },
+  chromeBlue: { id: 'chromeBlue', accentRgb: CHROME_RGB.blue, secondaryRgb: CHROME_RGB.orange, dangerRgb: CHROME_RGB.red },
+  chromeGreen: { id: 'chromeGreen', accentRgb: CHROME_RGB.green, secondaryRgb: CHROME_RGB.blue, dangerRgb: CHROME_RGB.red },
 };
 
 export interface PlannedSceneSpec {
