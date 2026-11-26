@@ -2,6 +2,7 @@ import React from 'react';
 import { Composition, Folder } from 'remotion';
 import { FPS, HEIGHT, WIDTH } from './design/tokens';
 import { ENGINE_GALLERY_FRAMES, EngineGallery } from './engine/EngineGallery';
+import { MATCHCUT_SHOWCASE_FRAMES, MatchCutShowcase } from './engine/MatchCutShowcase';
 import { AGY_EPISODE_TOTAL_FRAMES, AgyEpisodeFull } from './episodes/agy-slash-commands/EpisodeFull';
 import { AGY_V2_FULL_FRAMES, AgyV2FullVideo } from './compositions/AgyV2FullVideo';
 
@@ -29,6 +30,14 @@ export const RemotionRoot: React.FC = () => {
           id="EngineGallery"
           component={EngineGallery}
           durationInFrames={ENGINE_GALLERY_FRAMES}
+          fps={FPS}
+          width={WIDTH}
+          height={HEIGHT}
+        />
+        <Composition
+          id="MatchCutShowcase"
+          component={MatchCutShowcase}
+          durationInFrames={MATCHCUT_SHOWCASE_FRAMES}
           fps={FPS}
           width={WIDTH}
           height={HEIGHT}

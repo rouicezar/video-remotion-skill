@@ -67,7 +67,7 @@ description: >-
 
 ### 3. 颗粒级微拍演绎与几何无感转场
 - **1.5–3.0 秒微拍锁死**：将长逻辑拆分为短促干脆的微切面，严禁单布局线性慢拖 10–15 秒。
-- **几何形态无感匹配转场（Shape-Match Morph）**：相邻场景/微拍优先复用同构几何主体变形衔接（如：圆形节点 → 放大展开为星轨环/环形仪表盘；横向胶囊条 → 拉伸展开为终端窗口），**严禁全片依赖简单的 `opacity` 交叉淡入淡出导致双层文字半透明叠影**。
+- **几何形态无感匹配转场（Shape-Match Morph / `<MatchCutBridge>`）**：跨 `<Sequence>` 边界切场时，必须使用挂载在 `<Stage>` 层级的 `<MatchCutBridge from={...} to={...} />`，将上一场主角的坐标、尺寸、圆角轮廓（圆 ↔ 方 ↔ 胶囊）与 Chrome 色彩在 16 帧内连续形变为下一场主角（太阳 → 车灯式同构衔接），**严禁全片依赖简单的 `opacity` 交叉淡入淡出导致双层文字半透明叠影**。
 - **多节点镜头推近跟随**：当场景含 4 个以上流程节点时，在整体关系亮相后，通过舞台容器 `scale(1.4–1.7) + translate3d` 平滑推近当前讲述节点，确保手机小屏始终主体饱满。
 - **严格时序因果与递进点亮**：
   - 并列概念/平台/标签必须按口播念到的**精确先后帧**逐个触发缩放+光晕强调；未讲到的终态徽章（如通过/完成标识）严禁提前静态挂出；
@@ -90,7 +90,8 @@ description: >-
 ## 三、工程资产与参考说明
 - **Remotion 根目录**：`/Users/rouice/视频探索/xuan-hud-video`
 - **共享引擎层（新剧集唯一允许 import 的基础设施 · 13 大异构 2.5D 积木全集）**：
-  - 统一入口：[src/engine/index.ts](file:///Users/rouice/视频探索/xuan-hud-video/src/engine/index.ts)（含 `CRISP_SPRING`、`mixRgb`、`<PhysicalGlass3D>`、`<Stage>`、`<CameraRig>`、`<FlipSlab3D>`、`<SfxGroup>`、SRT 锚点引擎 `srt.ts`、五维目录与防重编排器 `catalog/index.ts`）
+  - 统一入口：[src/engine/index.ts](file:///Users/rouice/视频探索/xuan-hud-video/src/engine/index.ts)（含 `CRISP_SPRING`、`mixRgb`、`<PhysicalGlass3D>`、`<MatchCutBridge>`、`<SceneShell>`、`<DynamicTwoStage>`、`<Stage>`、`<CameraRig>`、`<FlipSlab3D>`、`<SfxGroup>`、SRT 锚点引擎 `srt.ts`、五维目录与防重编排器 `catalog/index.ts`）
+  - **5 类原生非方形 2.5D 几何原语**（`src/engine/shapes/Geometry3D.tsx`）：`Disc3D`（真圆盘）、`Pill3D`（真胶囊）、`HexNode3D`（六边形集群节点）、`DiamondGate3D`（切角盾形门禁）、`Trapezoid3D`（等腰梯形漏斗层）；字重统一使用 `400` Regular / `500` Medium 且无暗阴影（防暗底细白字糊边，同时严禁 `>=600` 触发苹方伪粗体）
   - **13 大 2.5D 几何积木库**（`src/engine/blocks/`）：`BentoDeck2Plus3`、`SplitFanOut`、`StarBurstTopology`、`OrbitLoopRing`、`MilestoneGateTrack`、`CircularGaugeConsole`、`OfficialCropWindow`、`PromptConsole`、`VersusCompareArena`、`DarkCodeTerminal`、`HorizontalTimelineTrack`、`HeroMetricSpotlight`、`FunnelFilterStack`
   - 引擎材质与积木画廊：[EngineGallery.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/engine/EngineGallery.tsx)；唯一单源全片入口（样片由 `--frames=0-1269` 直接截取，标杆 Tag `v3.1-approved-sample`）：[EpisodeFull.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/episodes/agy-slash-commands/EpisodeFull.tsx)
   - 色彩、画幅与矢量品牌库：[tokens.ts](file:///Users/rouice/视频探索/xuan-hud-video/src/design/tokens.ts)、[BrandLogos.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/design/BrandLogos.tsx)

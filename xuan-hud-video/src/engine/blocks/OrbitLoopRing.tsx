@@ -3,6 +3,7 @@ import { spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { COLORS, FONTS, WEIGHTS } from '../../design/tokens';
 import { clamp01, CRISP_SPRING, easeInOutCubic, mixRgb, Rgb, smoothFocusWeight, steppedGlide } from '../motion';
 import { PhysicalGlass3D } from '../PhysicalGlass3D';
+import { Disc3D } from '../shapes/Geometry3D';
 import { SfxGroup } from '../Sfx';
 
 export interface OrbitPhaseSpec {
@@ -108,27 +109,26 @@ export const OrbitLoopRing: React.FC<{
         })}
       </svg>
 
-      {/* 中心引擎核心圆砖 */}
+      {/* 中心引擎核心真圆盘（Disc3D） */}
       <div
         style={{
           position: 'absolute',
-          left: 650,
-          top: 266,
-          width: 260,
+          left: 662,
+          top: 252,
           transform: `scale(${(0.96 + solvedP * 0.06).toFixed(4)})`,
           zIndex: 4,
         }}
       >
-        <PhysicalGlass3D active={0.85 + solvedP * 0.15} accentRgb={curCoreRgb} radius={32} slabPx={15} extrudeX={0} padding="32px 24px 36px">
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, textAlign: 'center' }}>
-            <span style={{ fontFamily: FONTS.mono, fontSize: 24, color: mixRgb(accentRgb, solvedRgb, solvedP), letterSpacing: 2 }}>
+        <Disc3D size={236} active={0.85 + solvedP * 0.15} accentRgb={curCoreRgb} slabPx={15}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, textAlign: 'center', padding: '0 20px' }}>
+            <span style={{ fontFamily: FONTS.mono, fontSize: 24, fontWeight: WEIGHTS.regular, color: mixRgb(accentRgb, solvedRgb, solvedP), letterSpacing: 2 }}>
               {coreTag}
             </span>
-            <span style={{ fontSize: 36, fontWeight: WEIGHTS.regular, color: COLORS.white, letterSpacing: 1.5 }}>
+            <span style={{ fontSize: 34, fontWeight: WEIGHTS.medium, color: COLORS.white, letterSpacing: 1.2 }}>
               {solvedP > 0.5 ? solvedLabel : coreTitle}
             </span>
           </div>
-        </PhysicalGlass3D>
+        </Disc3D>
       </div>
 
       {/* 四象限 2.5D 迭代节点 */}
@@ -162,10 +162,10 @@ export const OrbitLoopRing: React.FC<{
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 18 }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  <span style={{ fontSize: 36, fontWeight: WEIGHTS.regular, color: COLORS.white, letterSpacing: 1.5 }}>
+                  <span style={{ fontSize: 36, fontWeight: WEIGHTS.medium, color: COLORS.white, letterSpacing: 1.5 }}>
                     {ph.title}
                   </span>
-                  <span style={{ fontSize: 25, fontWeight: WEIGHTS.light, color: '#AAB8CE', letterSpacing: 1 }}>
+                  <span style={{ fontSize: 25, fontWeight: WEIGHTS.regular, color: '#C6D2E4', letterSpacing: 0.8 }}>
                     {ph.sub}
                   </span>
                 </div>

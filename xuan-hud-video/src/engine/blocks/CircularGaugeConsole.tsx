@@ -3,6 +3,7 @@ import { spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { COLORS, FONTS, WEIGHTS } from '../../design/tokens';
 import { clamp01, CRISP_SPRING, easeInOutCubic, mixRgb, Rgb } from '../motion';
 import { PhysicalGlass3D } from '../PhysicalGlass3D';
+import { Disc3D } from '../shapes/Geometry3D';
 import { SfxGroup } from '../Sfx';
 
 export interface CheckCriterionSpec {
@@ -123,9 +124,9 @@ export const CircularGaugeConsole: React.FC<{
         </PhysicalGlass3D>
       </div>
 
-      {/* 右侧 2.5D 大号圆形进度仪表盘 */}
-      <div style={{ display: 'flex', justifyContent: 'center', transform: `perspective(1500px) rotateY(-4deg) scale(${(0.96 + doneWeight * 0.05).toFixed(4)})` }}>
-        <PhysicalGlass3D active={0.6 + doneWeight * 0.4} accentRgb={curRgb} radius={34} slabPx={16} extrudeX={6} padding="44px 44px 48px">
+      {/* 右侧：真正脱掉方框的 2.5D 大号圆形厚盘仪表盘（Disc3D） */}
+      <div style={{ display: 'flex', justifyContent: 'center', transform: `perspective(1500px) rotateY(-4deg) scale(${(0.96 + doneWeight * 0.05).toFixed(4)})`, outline: '1px solid transparent' }}>
+        <Disc3D size={476} active={0.65 + doneWeight * 0.35} accentRgb={curRgb} slabPx={16} extrudeX={6}>
           <div style={{ position: 'relative', width: 440, height: 440, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="440" height="440" viewBox="0 0 450 450" style={{ transform: 'rotate(-90deg)' }}>
               <defs>
@@ -134,8 +135,8 @@ export const CircularGaugeConsole: React.FC<{
                   <stop offset="100%" stopColor={mixRgb(accentRgb, passRgb, doneWeight)} />
                 </linearGradient>
               </defs>
-              <circle cx="225" cy="225" r="212" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="2" strokeDasharray="6 10" />
-              <circle cx="225" cy="225" r={radius} fill="none" stroke="rgba(255,255,255,0.09)" strokeWidth="18" />
+              <circle cx="225" cy="225" r="212" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="2" strokeDasharray="6 10" />
+              <circle cx="225" cy="225" r={radius} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="18" />
               <circle
                 cx="225"
                 cy="225"
@@ -150,12 +151,12 @@ export const CircularGaugeConsole: React.FC<{
             </svg>
 
             <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
-              <span style={{ fontFamily: FONTS.mono, fontSize: 24, color: '#9EB0CA', letterSpacing: 2.5 }}>{gaugeLabel}</span>
+              <span style={{ fontFamily: FONTS.mono, fontSize: 24, fontWeight: WEIGHTS.regular, color: '#C6D2E4', letterSpacing: 2.2 }}>{gaugeLabel}</span>
               <span
                 style={{
                   fontFamily: FONTS.display,
                   fontSize: 112,
-                  fontWeight: WEIGHTS.light,
+                  fontWeight: WEIGHTS.regular,
                   fontVariantNumeric: 'tabular-nums',
                   color: mixRgb(accentRgb, passRgb, doneWeight),
                   lineHeight: 0.94,
@@ -163,12 +164,12 @@ export const CircularGaugeConsole: React.FC<{
               >
                 {pct}%
               </span>
-              <span style={{ fontSize: 27, fontWeight: WEIGHTS.light, color: mixRgb([214, 224, 240], [180, 250, 218], doneWeight), letterSpacing: 1.5 }}>
+              <span style={{ fontSize: 27, fontWeight: WEIGHTS.regular, color: mixRgb([230, 238, 248], [200, 252, 224], doneWeight), letterSpacing: 1.4 }}>
                 {doneWeight > 0.5 ? doneStatus : runningStatus}
               </span>
             </div>
           </div>
-        </PhysicalGlass3D>
+        </Disc3D>
       </div>
     </div>
   );

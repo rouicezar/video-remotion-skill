@@ -3,6 +3,7 @@ import { spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { COLORS, FONTS, WEIGHTS } from '../../design/tokens';
 import { clamp01, CRISP_SPRING, easeInOutCubic, mixRgb, Rgb, smoothFocusWeight, steppedGlide } from '../motion';
 import { PhysicalGlass3D } from '../PhysicalGlass3D';
+import { DiamondGate3D } from '../shapes/Geometry3D';
 import { SfxGroup } from '../Sfx';
 
 export interface MilestoneStageSpec {
@@ -158,7 +159,7 @@ export const MilestoneGateTrack: React.FC<{
         );
       })}
 
-      {/* 2 枚独立审查门禁徽章（仅在口播讲到门禁时弹出，零提前剧透） */}
+      {/* 2 枚真 2.5D 立体盾牌审查门禁（DiamondGate3D，彻底告别方框门禁） */}
       {gates.map((gt, idx) => {
         const gs = gateSlots[idx];
         const gp = spring({ frame: Math.max(0, frame - gt.at), fps, config: CRISP_SPRING });
@@ -169,19 +170,18 @@ export const MilestoneGateTrack: React.FC<{
             style={{
               position: 'absolute',
               left: gs.x - 110,
-              top: gs.y,
-              width: 340,
+              top: gs.y - 12,
               opacity: gp,
               transform: `scale(${(0.86 + gp * 0.14).toFixed(4)})`,
               zIndex: 6,
             }}
           >
-            <PhysicalGlass3D active={0.92} accentRgb={passRgb} radius={20} slabPx={11} extrudeX={0} padding="20px 26px 24px" sheenSpeed={0.6}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14 }}>
-                <span style={{ fontFamily: FONTS.mono, fontSize: 25, color: '#D4FCE8' }}>{gt.roleLabel}</span>
+            <DiamondGate3D width={370} height={104} slabPx={12} active={0.95} accentRgb={passRgb}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
+                <span style={{ fontFamily: FONTS.mono, fontSize: 25, fontWeight: WEIGHTS.medium, color: '#D4FCE8' }}>{gt.roleLabel}</span>
                 <span style={{ fontSize: 25, fontWeight: WEIGHTS.regular, color: COLORS.white }}>{gt.verdictLabel}</span>
               </div>
-            </PhysicalGlass3D>
+            </DiamondGate3D>
           </div>
         );
       })}

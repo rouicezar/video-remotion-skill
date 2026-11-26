@@ -3,6 +3,7 @@ import { spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { COLORS, FONTS, WEIGHTS } from '../../design/tokens';
 import { clamp01, CRISP_SPRING, easeInOutCubic, mixRgb, Rgb } from '../motion';
 import { PhysicalGlass3D } from '../PhysicalGlass3D';
+import { Trapezoid3D } from '../shapes/Geometry3D';
 import { SfxGroup } from '../Sfx';
 
 export interface FunnelStageSpec {
@@ -32,8 +33,13 @@ export const FunnelFilterStack: React.FC<{
   const { fps } = useVideoConfig();
   const uid = useId().replace(/:/g, '');
 
-  const widths = [840, 700, 560] as const;
-  const centerLeft = 430; // 左侧漏斗中轴 x=430，第3层右边缘 = 430 + 280 = 710
+  // 真等腰梯形上底/下底宽度，构成肉眼一眼可辨的立体漏斗斜边！
+  const trapSpecs = [
+    { topW: 840, botW: 720 },
+    { topW: 690, botW: 580 },
+    { topW: 550, botW: 450 },
+  ] as const;
+  const centerLeft = 430; // 第3层右腰中点约在 x = 430 + 250 = 680
   const outP = spring({ frame: Math.max(0, frame - output.at), fps, config: CRISP_SPRING });
   const beamP = clamp01(easeInOutCubic((frame - (output.at - 6)) / 14));
 
@@ -68,41 +74,34 @@ export const FunnelFilterStack: React.FC<{
         />
       </svg>
 
-      {/* 左侧由宽到窄三级递进 2.5D 漏斗厚板 */}
+      {/* 左侧由宽到窄三级真 2.5D 等腰梯形漏斗（Trapezoid3D，彻底告别三根方条） */}
       {layers.map((ly, idx) => {
-        const w = widths[idx];
+        const sp = trapSpecs[idx];
         const lp = spring({ frame: Math.max(0, frame - ly.at), fps, config: CRISP_SPRING });
-        const top = 76 + idx * 212;
+        const top = 74 + idx * 204;
+        const boxW = sp.topW + 8;
         return (
           <div
             key={ly.title}
             style={{
               position: 'absolute',
-              left: centerLeft - w / 2,
+              left: centerLeft - boxW / 2,
               top,
-              width: w,
               opacity: lp,
-              transform: `perspective(1400px) translate3d(0, ${((1 - lp) * -28).toFixed(1)}px, 0) rotateX(5deg)`,
+              transform: `translate3d(0, ${((1 - lp) * -28).toFixed(1)}px, 0)`,
               zIndex: 4 + idx,
             }}
           >
-            <PhysicalGlass3D
-              active={0.3 + (idx / 2) * 0.55}
-              accentRgb={accentRgb}
-              radius={24}
-              slabPx={14}
-              extrudeX={-4}
-              padding="30px 38px 34px"
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 20 }}>
-                <span style={{ fontSize: 34, fontWeight: WEIGHTS.regular, color: COLORS.white, letterSpacing: 1.2, whiteSpace: 'nowrap' }}>
+            <Trapezoid3D topWidth={sp.topW} bottomWidth={sp.botW} height={124} slabPx={14} active={0.35 + (idx / 2) * 0.55} accentRgb={accentRgb}>
+              <div style={{ width: sp.botW - 28, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 18 }}>
+                <span style={{ fontSize: 32, fontWeight: WEIGHTS.medium, color: COLORS.white, letterSpacing: 1, whiteSpace: 'nowrap' }}>
                   {ly.title}
                 </span>
-                <span style={{ fontFamily: FONTS.mono, fontSize: 24, color: mixRgb([190, 204, 226], accentRgb, 0.4 + idx * 0.3), whiteSpace: 'nowrap', flexShrink: 0 }}>
+                <span style={{ fontFamily: FONTS.mono, fontSize: 24, fontWeight: WEIGHTS.regular, color: mixRgb([216, 224, 238], accentRgb, 0.45 + idx * 0.28), whiteSpace: 'nowrap', flexShrink: 0 }}>
                   {ly.countTag}
                 </span>
               </div>
-            </PhysicalGlass3D>
+            </Trapezoid3D>
           </div>
         );
       })}

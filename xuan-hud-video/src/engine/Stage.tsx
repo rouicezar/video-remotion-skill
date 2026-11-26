@@ -174,7 +174,7 @@ export const Stage: React.FC<StageProps> = ({
               fontFamily: FONTS.mono,
               fontSize: 24,
               fontWeight: WEIGHTS.regular,
-              color: '#C8D3E6',
+              color: '#D4DFEE',
               letterSpacing: 2,
             }}
           >
@@ -202,7 +202,7 @@ export const Stage: React.FC<StageProps> = ({
             );
           })}
         </div>
-        <div style={{ fontFamily: FONTS.mono, fontSize: 24, fontWeight: WEIGHTS.light, color: '#9BA8BE', letterSpacing: 1.5 }}>
+        <div style={{ fontFamily: FONTS.mono, fontSize: 24, fontWeight: WEIGHTS.regular, color: '#B8C6DC', letterSpacing: 1.5 }}>
           {String(stepIndex).padStart(2, '0')} / {String(totalSteps).padStart(2, '0')}
         </div>
       </div>

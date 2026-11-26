@@ -159,7 +159,7 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
             '0 2px 3px rgba(0, 0, 0, 0.55)',
           ].join(', '),
           outline: '1px solid transparent',
-          textShadow: '0 1px 2px rgba(4, 7, 14, 0.6)',
+          // 去除黑底 textShadow 避免细白字边缘被黑影吞噬发糊，保持字体像激光蚀刻般清亮锐利
           zIndex: 2,
         }}
       >
@@ -205,7 +205,7 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
             style={{
               position: 'absolute',
               inset: 0,
-              background: `linear-gradient(114deg, transparent ${sweepPos - 17}%, rgba(255,255,255,${(0.08 + a * 0.045).toFixed(3)}) ${sweepPos}%, transparent ${sweepPos + 17}%)`,
+              background: `linear-gradient(114deg, transparent ${sweepPos - 17}%, rgba(255,255,255,${(0.05 + a * 0.03).toFixed(3)}) ${sweepPos}%, transparent ${sweepPos + 17}%)`,
               pointerEvents: 'none',
               zIndex: 10,
             }}

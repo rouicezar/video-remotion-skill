@@ -42,13 +42,13 @@ export const FONTS = {
 } as const;
 
 /**
- * 干净克制的字重体系（严禁 >= 700 触发 macOS PingFang SC 浏览器合成伪粗体导致笔画粘连发脏）：
- * - light (300)  : 顶部栏、副标、单位说明、大号精密数字
- * - regular (400): 正文、胶囊标签、底部字幕
- * - medium (500) : 卡片主锚点词、关键指令（最高允许 500，靠字号与色彩拉开层级而非粗黑笔画）
+ * 清亮锐利的字重体系（避免 300 过细被黑底蚀字发糊，同时严禁 >= 600 触发 PingFang SC 伪粗体）：
+ * - light (400)  : 副标、顶部栏、辅助标签（24–32px 小字统一用 400 Regular 保证手机端笔画清晰不发灰）
+ * - regular (400): 正文、胶囊、底部字幕
+ * - medium (500) : 卡片主锚点词、关键标题与核心指令（原生 PingFang Medium 锐利提神不臃肿）
  */
 export const WEIGHTS = {
-  light: 300,
+  light: 400,
   regular: 400,
   medium: 500,
 } as const;
