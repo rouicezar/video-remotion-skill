@@ -1,0 +1,11 @@
+.DS_Store
+node_modules/
+output/
+*.mp4
+*.MP4
+*.mov
+*.wav
+*.m4a
+xuan-hud-video/out/
+xuan-hud-video/public/**/raw/
+xuan-hud-video/public/**/dark_raw*/

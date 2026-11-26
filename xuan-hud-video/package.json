@@ -1,0 +1,21 @@
+{
+  "name": "xuan-hud-video",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio",
+    "render:replica": "remotion render src/index.ts ReplicaVideo ../output/01-复刻成品.mp4",
+    "render:universal": "remotion render src/index.ts UniversalVideo ../output/universal-demo.mp4"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remotion": "^4.0.290",
+    "@remotion/cli": "^4.0.290",
+    "@remotion/media-utils": "^4.0.290"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "typescript": "^5.7.0"
+  }
+}

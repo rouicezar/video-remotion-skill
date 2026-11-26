@@ -1,0 +1,244 @@
+{
+  "timeline": {
+    "meta": {
+      "title": "AI Agent 工程化落地 3 大原则",
+      "episodeBadge": "工程实践 · v2.0",
+      "watermark": "AGENT",
+      "fps": 30,
+      "durationSec": 22.216,
+      "audioFile": "universal_run/audio.m4a"
+    },
+    "subtitles": [
+      {
+        "startSec": 0.0,
+        "endSec": 3.8,
+        "zh": "做 AI Agent 工程化落地，其实只要抓住三大核心原则",
+        "en": "For production AI Agents, focus on 3 core principles"
+      },
+      {
+        "startSec": 3.8,
+        "endSec": 8.5,
+        "zh": "第一，先在全局空间画布上拆解流程和步骤，让每一步都可观测",
+        "en": "1. Map the workflow on a global canvas so every step is observable"
+      },
+      {
+        "startSec": 8.5,
+        "endSec": 13.5,
+        "zh": "第二，不要硬切黑盒，用对比与主次聚焦把关键模块讲透",
+        "en": "2. Avoid black-box hard cuts; focus clearly on key modules"
+      },
+      {
+        "startSec": 13.5,
+        "endSec": 18.0,
+        "zh": "第三，从海量日志里原位放大定位问题，建立自动化回放验证",
+        "en": "3. Zoom in-place on logs and build automated replay verification"
+      },
+      {
+        "startSec": 18.0,
+        "endSec": 22.2,
+        "zh": "总结这三条原则，你最先落地哪一条？欢迎在评论区告诉我",
+        "en": "Which of these 3 principles will you apply first?"
+      }
+    ],
+    "scenes": [
+      {
+        "id": "hook",
+        "type": "hook",
+        "startSec": 0.0,
+        "endSec": 3.8,
+        "badge": "工程实践 · v2.0",
+        "title": "AI Agent 工程化落地 3 大原则",
+        "subtitle": "做 AI Agent 工程化落地，其实只要抓住三大核心原则",
+        "items": [
+          {
+            "code": "01",
+            "title": "第一，先在全局空间画布上",
+            "category": "WORLD",
+            "description": "第一，先在全局空间画布上拆解流程和步骤，让每一步都可观测",
+            "color": "#f5a623"
+          },
+          {
+            "code": "02",
+            "title": "第二，不要硬切黑盒，用对",
+            "category": "ANGLED",
+            "description": "第二，不要硬切黑盒，用对比与主次聚焦把关键模块讲透，第三，从海量日志里原位放大定位问题，建立",
+            "color": "#74B3F5"
+          }
+        ]
+      },
+      {
+        "id": "demo-01",
+        "type": "move-demo",
+        "startSec": 3.8,
+        "endSec": 8.5,
+        "index": 1,
+        "total": 2,
+        "title": "第一，先在全局空间画布上",
+        "subtitle": "WORLD CANVAS",
+        "moveType": "world-canvas",
+        "cameraMoving": true,
+        "items": [
+          {
+            "code": "01",
+            "title": "第一",
+            "subtitle": "关键节点 1 / 4",
+            "color": "#f5a623"
+          },
+          {
+            "code": "02",
+            "title": "先在全局空间画布上拆解流程和",
+            "subtitle": "步骤",
+            "color": "#74B3F5"
+          },
+          {
+            "code": "03",
+            "title": "让每一步都可观测",
+            "subtitle": "关键节点 3 / 4",
+            "color": "#34d399"
+          },
+          {
+            "code": "04",
+            "title": "第一，先在全局空间画布上拆解",
+            "subtitle": "流程和步骤，让每一步都可观测",
+            "color": "#EE8458"
+          }
+        ],
+        "promptTokens": [
+          {
+            "text": "第一，先在全局空间",
+            "highlight": false
+          },
+          {
+            "text": "画布上拆解流程和步",
+            "highlight": true
+          },
+          {
+            "text": "骤，让每一步都可观测",
+            "highlight": false
+          }
+        ],
+        "metrics": {
+          "status": "WORLD CANVAS",
+          "graphMode": "curve",
+          "items": [
+            {
+              "labelEn": "SECTION",
+              "labelZh": "当前章节",
+              "value": "01 / 02",
+              "accent": true
+            },
+            {
+              "labelEn": "ENGINE",
+              "labelZh": "动效引擎",
+              "value": "WORLD CANVAS"
+            },
+            {
+              "labelEn": "CAMERA",
+              "labelZh": "运镜状态",
+              "value": "MOVE"
+            }
+          ]
+        }
+      },
+      {
+        "id": "demo-02",
+        "type": "move-demo",
+        "startSec": 8.5,
+        "endSec": 18.0,
+        "index": 2,
+        "total": 2,
+        "title": "第二，不要硬切黑盒，用对",
+        "subtitle": "ANGLED DOLLY",
+        "moveType": "angled-dolly",
+        "cameraMoving": true,
+        "items": [
+          {
+            "code": "01",
+            "title": "第二",
+            "subtitle": "关键节点 1 / 4",
+            "color": "#74B3F5"
+          },
+          {
+            "code": "02",
+            "title": "不要硬切黑盒",
+            "subtitle": "关键节点 2 / 4",
+            "color": "#34d399"
+          },
+          {
+            "code": "03",
+            "title": "用对比与主次聚焦把关键模块讲",
+            "subtitle": "透",
+            "color": "#EE8458"
+          },
+          {
+            "code": "04",
+            "title": "第三",
+            "subtitle": "关键节点 4 / 4",
+            "color": "#E88BA8"
+          }
+        ],
+        "promptTokens": [
+          {
+            "text": "第二，不要硬切黑盒，用对比与主次聚",
+            "highlight": false
+          },
+          {
+            "text": "焦把关键模块讲透，第三，从海量日志",
+            "highlight": true
+          },
+          {
+            "text": "里原位放大定位问题，建立自动化回放验证",
+            "highlight": false
+          }
+        ],
+        "metrics": {
+          "status": "ANGLED DOLLY",
+          "graphMode": "curve",
+          "items": [
+            {
+              "labelEn": "SECTION",
+              "labelZh": "当前章节",
+              "value": "02 / 02",
+              "accent": true
+            },
+            {
+              "labelEn": "ENGINE",
+              "labelZh": "动效引擎",
+              "value": "ANGLED DOLLY"
+            },
+            {
+              "labelEn": "CAMERA",
+              "labelZh": "运镜状态",
+              "value": "MOVE"
+            }
+          ]
+        }
+      },
+      {
+        "id": "outro",
+        "type": "cheatsheet-cta",
+        "startSec": 18.0,
+        "endSec": 22.216,
+        "title": "核心要点回顾",
+        "subtitle": "工程实践 · v2.0 · KEY TAKEAWAYS · 截图保存",
+        "ctaText": "你最先落地哪一条？",
+        "items": [
+          {
+            "code": "01",
+            "title": "第一，先在全局空间画布上",
+            "category": "WORLD",
+            "description": "第一，先在全局空间画布上拆解流程和步骤，让每一步都可观测",
+            "color": "#f5a623"
+          },
+          {
+            "code": "02",
+            "title": "第二，不要硬切黑盒，用对",
+            "category": "ANGLED",
+            "description": "第二，不要硬切黑盒，用对比与主次聚焦把关键模块讲透，第三，从海量日志里原位放大定位问题，建立",
+            "color": "#74B3F5"
+          }
+        ]
+      }
+    ]
+  }
+}
