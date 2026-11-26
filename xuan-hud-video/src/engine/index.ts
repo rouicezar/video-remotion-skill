@@ -7,5 +7,6 @@ export * from './CameraRig';
 export * from './FlipSlab3D';
 export * from './catalog';
 export * from './blocks/PromptConsole';
+export * from './blocks/BentoDeck';
 export * from './blocks/SplitFanOut';
 export * from './blocks/StarBurstTopology';
