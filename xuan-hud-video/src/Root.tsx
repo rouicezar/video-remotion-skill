@@ -5,13 +5,21 @@ import { AgyV2Showcase } from './compositions/AgyV2Showcase';
 import { AGY_V2_SAMPLE_FRAMES, AgyV2MotionSample } from './compositions/AgyV2MotionSample';
 import { AGY_V2_FULL_FRAMES, AgyV2FullVideo } from './compositions/AgyV2FullVideo';
 import { ENGINE_GALLERY_FRAMES, EngineGallery } from './engine/EngineGallery';
+import { SAMPLE_V3_TOTAL_FRAMES, SampleMotionV3 } from './episodes/agy-slash-commands/SampleMotionV3';
 import { AGY_SCENE04_FRAMES, AgySwarmPromptScene } from './episodes/agy-slash-commands/Scene04SwarmPrompt';
 
-// 已淘汰的 HudFrame 时代合成（Universal/Replica/GooglePerks/AgySlashCommands）已移到 legacy/，不再注册。
 export const RemotionRoot: React.FC = () => {
   return (
     <>
       <Folder name="Engine">
+        <Composition
+          id="SampleMotionV3"
+          component={SampleMotionV3}
+          durationInFrames={SAMPLE_V3_TOTAL_FRAMES}
+          fps={FPS}
+          width={WIDTH}
+          height={HEIGHT}
+        />
         <Composition
           id="EngineGallery"
           component={EngineGallery}
