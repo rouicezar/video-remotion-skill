@@ -41,6 +41,12 @@ for (const file of TARGET_DIRS.flatMap(walk)) {
     for (const m of line.matchAll(/fontSize:\s*(\d+)/g)) {
       if (Number(m[1]) < 24) issues.push(`${file}:${ln} fontSize=${m[1]} < 24px`);
     }
+    for (const m of line.matchAll(/fontWeight:\s*(\d+|['"]bold['"]|['"]bolder['"])/g)) {
+      const v = m[1];
+      if (v.includes('bold') || Number(v) >= 600) {
+        issues.push(`${file}:${ln} fontWeight=${v} 过粗（请用 WEIGHTS.light=300 / regular=400 / medium=500，严禁 >=600 粗体导致画面厚重发脏）`);
+      }
+    }
     if (/\bMath\.sin\s*\(/.test(line)) {
       issues.push(`${file}:${ln} 禁止使用 Math.sin 持续漂浮`);
     }

@@ -24,9 +24,22 @@ export const COLORS = {
 } as const;
 
 export const FONTS = {
-  display: "'DIN Condensed', 'Avenir Next Condensed', 'Impact', 'Arial Narrow', sans-serif",
-  sans: "'PingFang SC', 'Hiragino Sans GB', 'SF Pro Display', 'Noto Sans CJK SC', sans-serif",
-  mono: "'SF Mono', 'Menlo', 'Monaco', 'JetBrains Mono', monospace",
+  // 弃用挤压粗糙的 DIN Condensed，统一使用几何感极干净的 SF Pro Display + PingFang SC
+  display: "'SF Pro Display', 'Inter', 'Helvetica Neue', 'PingFang SC', sans-serif",
+  sans: "'PingFang SC', 'SF Pro Display', 'Hiragino Sans GB', 'Noto Sans CJK SC', sans-serif",
+  mono: "'SF Mono', 'JetBrains Mono', 'Menlo', monospace",
+} as const;
+
+/**
+ * 干净克制的字重体系（严禁 >= 700 触发 macOS PingFang SC 浏览器合成伪粗体导致笔画粘连发脏）：
+ * - light (300)  : 顶部栏、副标、单位说明、大号精密数字
+ * - regular (400): 正文、胶囊标签、底部字幕
+ * - medium (500) : 卡片主锚点词、关键指令（最高允许 500，靠字号与色彩拉开层级而非粗黑笔画）
+ */
+export const WEIGHTS = {
+  light: 300,
+  regular: 400,
+  medium: 500,
 } as const;
 
 export const FPS = 30;

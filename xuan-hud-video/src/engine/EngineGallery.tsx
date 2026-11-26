@@ -1,7 +1,7 @@
 import React from 'react';
 import { Sequence, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { GeminiLogo, PythonLogo } from '../design/BrandLogos';
-import { COLORS, FONTS } from '../design/tokens';
+import { COLORS, FONTS, WEIGHTS } from '../design/tokens';
 import { CRISP_SPRING, mixRgb, PhysicalGlass3D, Stage } from './index';
 import { AgySwarmPromptScene } from '../episodes/agy-slash-commands/Scene04SwarmPrompt';
 
@@ -68,8 +68,12 @@ const GlassMaterialSpecimen: React.FC = () => {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 24 }}>
-          <span style={{ fontSize: 64, fontWeight: 900, color: COLORS.white }}>PhysicalGlass3D</span>
-          <span style={{ fontSize: 32, fontWeight: 800, color: '#B4C0D4' }}>材质基线与多主题换肤</span>
+          <span style={{ fontFamily: FONTS.display, fontSize: 62, fontWeight: WEIGHTS.light, color: COLORS.white, letterSpacing: 1 }}>
+            PhysicalGlass3D
+          </span>
+          <span style={{ fontSize: 30, fontWeight: WEIGHTS.light, color: '#9BA8BE', letterSpacing: 2 }}>
+            材质基线与多主题换肤
+          </span>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32, perspective: 1400 }}>
@@ -90,34 +94,41 @@ const GlassMaterialSpecimen: React.FC = () => {
                   padding="38px 36px"
                   sheenPulse={0.52}
                 >
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 26 }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span
                         style={{
                           fontFamily: FONTS.mono,
-                          fontSize: 28,
-                          fontWeight: 900,
-                          color: mixRgb([176, 188, 210], c.accent, 0.35 + c.active * 0.65),
+                          fontSize: 24,
+                          fontWeight: WEIGHTS.regular,
+                          letterSpacing: 1.8,
+                          color: mixRgb([162, 176, 200], c.accent, 0.3 + c.active * 0.7),
                         }}
                       >
                         {c.num} · {c.tag}
                       </span>
                       {c.icon}
                     </div>
-                    <div style={{ fontSize: 52, fontWeight: 900, color: COLORS.white }}>{c.title}</div>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 14 }}>
+                    <div style={{ fontSize: 48, fontWeight: WEIGHTS.regular, color: '#F4F7FC', letterSpacing: 2 }}>
+                      {c.title}
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 16 }}>
                       <span
                         style={{
                           fontFamily: FONTS.display,
-                          fontSize: 84,
-                          fontWeight: 900,
-                          color: mixRgb([230, 236, 246], c.accent, c.active),
+                          fontSize: 78,
+                          fontWeight: WEIGHTS.light,
+                          fontVariantNumeric: 'tabular-nums',
+                          letterSpacing: -1,
+                          color: mixRgb([232, 238, 248], c.accent, c.active),
                           lineHeight: 0.95,
                         }}
                       >
                         {c.metric}
                       </span>
-                      <span style={{ fontSize: 30, fontWeight: 800, color: '#C8D2E4' }}>{c.unit}</span>
+                      <span style={{ fontSize: 28, fontWeight: WEIGHTS.light, color: '#A8B5CA', letterSpacing: 1.5 }}>
+                        {c.unit}
+                      </span>
                     </div>
                   </div>
                 </PhysicalGlass3D>

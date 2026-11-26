@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCurrentFrame, useVideoConfig } from 'remotion';
-import { COLORS, FONTS } from '../design/tokens';
+import { COLORS, FONTS, WEIGHTS } from '../design/tokens';
 import { SubtitleCue } from '../types/timeline';
 import { mixRgb, Rgb } from './motion';
 
@@ -60,6 +60,10 @@ export const Stage: React.FC<StageProps> = ({
           'radial-gradient(ellipse 88% 78% at 50% 48%, #151B28 0%, #0C1018 70%, #07090E 100%)',
         ].join(', '),
         fontFamily: FONTS.sans,
+        fontWeight: WEIGHTS.light,
+        fontSynthesis: 'none',
+        WebkitFontSmoothing: 'antialiased',
+        MozOsxFontSmoothing: 'grayscale',
         color: COLORS.white,
         boxSizing: 'border-box',
       }}
@@ -137,9 +141,10 @@ export const Stage: React.FC<StageProps> = ({
                 justifyContent: 'center',
                 transform: 'skewX(-10deg)',
                 fontSize: 88,
-                fontWeight: 900,
+                fontWeight: WEIGHTS.medium,
                 color: 'transparent',
-                WebkitTextStroke: '2px rgba(255,255,255,0.9)',
+                WebkitTextStroke: '1px rgba(255,255,255,0.85)',
+                letterSpacing: 6,
                 whiteSpace: 'nowrap',
               }}
             >
@@ -168,9 +173,9 @@ export const Stage: React.FC<StageProps> = ({
             style={{
               fontFamily: FONTS.mono,
               fontSize: 24,
-              fontWeight: 800,
-              color: '#D6DFEE',
-              letterSpacing: 1,
+              fontWeight: WEIGHTS.regular,
+              color: '#C8D3E6',
+              letterSpacing: 2,
             }}
           >
             {chapterLabel}
@@ -185,19 +190,19 @@ export const Stage: React.FC<StageProps> = ({
                 key={s}
                 style={{
                   flex: 1,
-                  height: 4,
+                  height: 3,
                   borderRadius: 3,
                   backgroundColor:
                     w === 0
-                      ? 'rgba(255,255,255,0.16)'
+                      ? 'rgba(255,255,255,0.14)'
                       : mixRgb([120, 95, 48], accent, w),
-                  boxShadow: s === stepIndex ? `0 0 14px rgba(${ar},${ag},${ab},0.65)` : 'none',
+                  boxShadow: s === stepIndex ? `0 0 12px rgba(${ar},${ag},${ab},0.55)` : 'none',
                 }}
               />
             );
           })}
         </div>
-        <div style={{ fontFamily: FONTS.mono, fontSize: 24, fontWeight: 800, color: '#B2BED2' }}>
+        <div style={{ fontFamily: FONTS.mono, fontSize: 24, fontWeight: WEIGHTS.light, color: '#9BA8BE', letterSpacing: 1.5 }}>
           {String(stepIndex).padStart(2, '0')} / {String(totalSteps).padStart(2, '0')}
         </div>
       </div>
@@ -207,7 +212,7 @@ export const Stage: React.FC<StageProps> = ({
         {children}
       </div>
 
-      {/* 底部全局字幕（56px 粗白体，符合 Gate 2 54–58px 区间） */}
+      {/* 底部全局字幕（54px 细常规白体，干净通透不糊边） */}
       {activeSub && (
         <div
           style={{
@@ -223,17 +228,17 @@ export const Stage: React.FC<StageProps> = ({
         >
           <div
             style={{
-              backgroundColor: 'rgba(12, 15, 22, 0.88)',
-              border: '2px solid rgba(255,255,255,0.14)',
+              backgroundColor: 'rgba(12, 15, 22, 0.82)',
+              border: '1.5px solid rgba(255,255,255,0.11)',
               padding: '12px 38px',
               borderRadius: 16,
-              fontSize: 56,
-              fontWeight: 900,
-              color: COLORS.white,
-              letterSpacing: 1,
+              fontSize: 54,
+              fontWeight: WEIGHTS.regular,
+              color: '#F4F7FC',
+              letterSpacing: 1.8,
               maxWidth: 1740,
               textAlign: 'center',
-              boxShadow: '0 10px 34px rgba(0,0,0,0.48)',
+              boxShadow: '0 10px 32px rgba(0,0,0,0.42)',
             }}
           >
             {activeSub.zh}

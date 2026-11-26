@@ -1,6 +1,6 @@
 import React from 'react';
 import { spring, useCurrentFrame, useVideoConfig } from 'remotion';
-import { COLORS, FONTS } from '../../design/tokens';
+import { COLORS, FONTS, WEIGHTS } from '../../design/tokens';
 import { beatHighlight, clamp01, CRISP_SPRING, easeOutExpo, mixRgb, Rgb } from '../motion';
 import { PhysicalGlass3D } from '../PhysicalGlass3D';
 import { SfxEvent, SfxGroup } from '../Sfx';
@@ -101,23 +101,24 @@ export const PromptConsole: React.FC<PromptConsoleProps> = ({
     >
       <SfxGroup events={sfxEvents} muted={sfxMuted} />
 
-      {/* 顶部超大锚点词（command 92px + 2–6 字短标题 48px） */}
+      {/* 顶部超大锚点词（细常规精密几何体，靠字号与色彩对比而非粗重笔画） */}
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 26 }}>
         {command && (
           <span
             style={{
               fontFamily: FONTS.mono,
-              fontSize: 92,
-              fontWeight: 900,
+              fontSize: 86,
+              fontWeight: WEIGHTS.regular,
               color: accentHex,
               lineHeight: 0.95,
-              textShadow: `0 0 36px rgba(${ar},${ag},${ab},0.35)`,
+              letterSpacing: -1,
+              textShadow: `0 0 32px rgba(${ar},${ag},${ab},0.28)`,
             }}
           >
             {command}
           </span>
         )}
-        <span style={{ fontSize: 48, fontWeight: 900, color: COLORS.white, letterSpacing: 0.5 }}>
+        <span style={{ fontSize: 46, fontWeight: WEIGHTS.light, color: '#EEF3FA', letterSpacing: 2 }}>
           {headline}
         </span>
       </div>
@@ -142,12 +143,14 @@ export const PromptConsole: React.FC<PromptConsoleProps> = ({
           >
             <span
               style={{
-                backgroundColor: accentHex,
-                color: '#0E1119',
-                padding: '8px 22px',
+                backgroundColor: `rgba(${ar}, ${ag}, ${ab}, 0.16)`,
+                border: `1.5px solid ${accentHex}`,
+                color: mixRgb([255, 240, 205], accentRgb, 0.55),
+                padding: '7px 22px',
                 borderRadius: 12,
-                fontSize: 26,
-                fontWeight: 900,
+                fontSize: 25,
+                fontWeight: WEIGHTS.regular,
+                letterSpacing: 1.5,
               }}
             >
               {saveLabel}
@@ -164,13 +167,14 @@ export const PromptConsole: React.FC<PromptConsoleProps> = ({
                     style={{
                       padding: '8px 20px',
                       borderRadius: 12,
-                      backgroundColor: `rgba(${ar}, ${ag}, ${ab}, ${(0.09 + act * 0.22).toFixed(3)})`,
+                      backgroundColor: `rgba(${ar}, ${ag}, ${ab}, ${(0.06 + act * 0.18).toFixed(3)})`,
                       borderWidth: 2,
                       borderStyle: 'solid',
-                      borderColor: mixRgb([196, 206, 224], accentRgb, 0.28 + act * 0.72),
-                      color: mixRgb([226, 232, 244], [255, 230, 175], act),
-                      fontSize: 26,
-                      fontWeight: 900,
+                      borderColor: mixRgb([180, 194, 216], accentRgb, 0.24 + act * 0.76),
+                      color: mixRgb([214, 224, 240], [255, 232, 182], act),
+                      fontSize: 25,
+                      fontWeight: WEIGHTS.light,
+                      letterSpacing: 1.2,
                       opacity: tp,
                       transform: `scale(${(0.88 + tp * 0.12 + act * 0.06).toFixed(4)})`,
                       boxSizing: 'border-box',
@@ -185,23 +189,24 @@ export const PromptConsole: React.FC<PromptConsoleProps> = ({
 
           <div
             style={{
-              fontSize: 42,
-              fontWeight: 900,
-              color: COLORS.white,
-              lineHeight: 1.5,
+              fontSize: 40,
+              fontWeight: WEIGHTS.light,
+              color: '#F2F6FC',
+              lineHeight: 1.58,
+              letterSpacing: 1,
               minHeight: 126,
               wordBreak: 'break-word',
             }}
           >
             {command && (
-              <span style={{ fontFamily: FONTS.mono, color: accentHex, marginRight: 12 }}>{command}</span>
+              <span style={{ fontFamily: FONTS.mono, fontWeight: WEIGHTS.regular, color: accentHex, marginRight: 14 }}>{command}</span>
             )}
             {typedText}
             {!typingDone && (
               <span
                 style={{
                   display: 'inline-block',
-                  width: 14,
+                  width: 3,
                   height: 38,
                   backgroundColor: accentHex,
                   marginLeft: 8,
@@ -214,7 +219,7 @@ export const PromptConsole: React.FC<PromptConsoleProps> = ({
         </PhysicalGlass3D>
       </div>
 
-      {/* 底部口播同步载体胶囊 + 计划徽章（全量 ≥ 28px） */}
+      {/* 底部口播同步载体胶囊 + 计划徽章（全量细常规体） */}
       {(platforms.length > 0 || planBadge) && (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 4px' }}>
           <div style={{ display: 'flex', gap: 18 }}>
@@ -228,14 +233,15 @@ export const PromptConsole: React.FC<PromptConsoleProps> = ({
                   style={{
                     padding: '12px 26px',
                     borderRadius: 14,
-                    backgroundColor: `rgba(${ar}, ${ag}, ${ab}, ${(0.08 + act * 0.2).toFixed(3)})`,
+                    backgroundColor: `rgba(${ar}, ${ag}, ${ab}, ${(0.06 + act * 0.16).toFixed(3)})`,
                     borderWidth: 2,
                     borderStyle: 'solid',
-                    borderColor: mixRgb([190, 202, 222], accentRgb, 0.26 + act * 0.74),
-                    boxShadow: `0 0 ${(28 * act).toFixed(0)}px rgba(${ar},${ag},${ab},${(0.44 * act).toFixed(2)})`,
-                    color: mixRgb([224, 232, 244], [255, 255, 255], act),
-                    fontSize: 28,
-                    fontWeight: 900,
+                    borderColor: mixRgb([180, 194, 216], accentRgb, 0.22 + act * 0.78),
+                    boxShadow: `0 0 ${(26 * act).toFixed(0)}px rgba(${ar},${ag},${ab},${(0.36 * act).toFixed(2)})`,
+                    color: mixRgb([214, 224, 240], [255, 255, 255], act),
+                    fontSize: 27,
+                    fontWeight: WEIGHTS.light,
+                    letterSpacing: 0.8,
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: 12,
@@ -259,13 +265,15 @@ export const PromptConsole: React.FC<PromptConsoleProps> = ({
             return (
               <span
                 style={{
-                  backgroundColor: mixRgb(bgRgb, bgRgb, 1),
-                  color: '#0E1119',
-                  padding: '12px 30px',
+                  backgroundColor: `rgba(${bgRgb[0]}, ${bgRgb[1]}, ${bgRgb[2]}, 0.16)`,
+                  border: `2px solid ${mixRgb(bgRgb, bgRgb, 1)}`,
+                  color: isGreen ? mixRgb([210, 250, 228], bgRgb, 0.45) : mixRgb([255, 238, 198], bgRgb, 0.45),
+                  padding: '11px 28px',
                   borderRadius: 14,
-                  fontSize: 28,
-                  fontWeight: 900,
-                  boxShadow: `0 0 ${(32 * glow).toFixed(0)}px rgba(${bgRgb[0]},${bgRgb[1]},${bgRgb[2]},0.65)`,
+                  fontSize: 27,
+                  fontWeight: WEIGHTS.regular,
+                  letterSpacing: 1.5,
+                  boxShadow: `0 0 ${(28 * glow).toFixed(0)}px rgba(${bgRgb[0]},${bgRgb[1]},${bgRgb[2]},0.45)`,
                   opacity: plP,
                   transform: `scale(${(0.88 + plP * 0.12 + glow * 0.06).toFixed(4)})`,
                 }}
