@@ -11,7 +11,8 @@
     "audio:normalize": "bash scripts/normalize-audio.sh",
     "qc": "bash scripts/qc.sh",
     "lint:gates": "node scripts/lint-gates.mjs",
-    "check": "tsc --noEmit && node scripts/lint-gates.mjs"
+    "check": "tsc --noEmit && node scripts/lint-gates.mjs && node scripts/verify-srt-catalog.mjs",
+    "test": "node scripts/verify-srt-catalog.mjs"
   },
   "dependencies": {
     "react": "^19.0.0",

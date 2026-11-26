@@ -3,27 +3,16 @@ import { Audio, staticFile } from 'remotion';
 import { AntigravityLogo, DesktopAppIcon, TerminalCliIcon } from '../../design/BrandLogos';
 import { FPS } from '../../design/tokens';
 import { AGY_COMMANDS_SUBTITLES } from '../../data/agyCommandsSubtitles';
-import { PromptConsole, Stage } from '../../engine';
+import { createSceneBeatSolver, PromptConsole, resolveAnchorSec, Stage } from '../../engine';
 
-const SCENE_START_SEC = 54.4;
-const SCENE_END_SEC = 68.3;
+// 场景起止边界与内部所有微拍均由 SRT 文本锚点自动反查，口播重录/剪辑后零手工改帧号！
+const SCENE_START_SEC = resolveAnchorSec(AGY_COMMANDS_SUBTITLES, '那要用呢') - 0.06;
+const SCENE_END_SEC = resolveAnchorSec(AGY_COMMANDS_SUBTITLES, '那第二种情况呢');
 export const AGY_SCENE04_FRAMES = Math.round((SCENE_END_SEC - SCENE_START_SEC) * FPS);
 
-const relFrame = (absSec: number) => Math.round((absSec - SCENE_START_SEC) * FPS);
+const beats = createSceneBeatSolver(AGY_COMMANDS_SUBTITLES, SCENE_START_SEC, SCENE_END_SEC, FPS);
+const LOCAL_SUBTITLES = beats.localSubtitles();
 
-const LOCAL_SUBTITLES = AGY_COMMANDS_SUBTITLES
-  .filter((c) => c.endSec > SCENE_START_SEC && c.startSec < SCENE_END_SEC)
-  .map((c) => ({
-    ...c,
-    startSec: Math.max(0, c.startSec - SCENE_START_SEC),
-    endSec: c.endSec - SCENE_START_SEC,
-  }));
-
-/**
- * 新引擎示范章节（≤ 250 行单源架构 `src/episodes/<slug>/SceneXX.tsx`）：
- * 用 `src/engine` 复现《Antigravity 的 5 条神级斜杠指令》Scene04（/swarm 抄作业提示词卡），
- * 同时修复旧版问题：人声 -14 LUFS 标准化音频、PhysicalGlass3D 顶层折射扫光、零 <24px 小字、组件内聚音效。
- */
 export const AgySwarmPromptScene: React.FC<{ withVoiceover?: boolean }> = ({ withVoiceover = false }) => {
   return (
     <Stage
@@ -48,14 +37,14 @@ export const AgySwarmPromptScene: React.FC<{ withVoiceover?: boolean }> = ({ wit
         headline="范围 + 验收"
         promptBody="把 src/modules 下面这 5 个独立模块都补齐错误处理和单元测试，完成后统一跑全量测试通过。"
         tags={[
-          { label: '① 拆分范围', at: relFrame(59.0) },
-          { label: '② 验收标准', at: relFrame(60.0) },
+          { label: '① 拆分范围', at: beats.at('拆分的范围') },
+          { label: '② 验收标准', at: beats.at({ anchor: '拆分的范围', offsetSec: 0.95 }) },
         ]}
         platforms={[
-          { label: 'Antigravity App', at: relFrame(63.0), icon: <DesktopAppIcon size={26} /> },
-          { label: 'Antigravity CLI', at: relFrame(64.23), icon: <TerminalCliIcon size={26} /> },
+          { label: 'Antigravity App', at: beats.at('在Antigravity的App'), icon: <DesktopAppIcon size={26} /> },
+          { label: 'Antigravity CLI', at: beats.at('在CLI里'), icon: <TerminalCliIcon size={26} /> },
         ]}
-        planBadge={{ label: '免费计划可用', at: relFrame(66.1), tone: 'green' }}
+        planBadge={{ label: '免费计划可用', at: beats.at('免费用户'), tone: 'green' }}
       />
     </Stage>
   );

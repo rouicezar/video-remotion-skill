@@ -55,11 +55,24 @@ export type SemanticBeatIntent =
   | 'pain-to-reversal'
   | 'iterative-loop'
   | 'staged-gates'
+  | 'verifiable-gauge'
+  | 'official-proof'
   | 'copy-prompt'
   | 'decision-summary';
 
+export type EngineBlockName =
+  | 'BentoDeck2Plus3'
+  | 'SplitFanOut'
+  | 'FlipSlab3D+StarBurstTopology'
+  | 'OrbitLoopRing'
+  | 'MilestoneGateTrack'
+  | 'CircularGaugeConsole'
+  | 'OfficialCropWindow'
+  | 'PromptConsole';
+
 export interface ArchetypeRule {
   intent: SemanticBeatIntent;
+  block: EngineBlockName;
   preferredLayouts: LayoutPresetId[];
   transitionIn: 'z-drop' | 'camera-dive-morph' | 'flip-3d-16f' | 'whip-pan-match';
   /** 冷却窗口：至少间隔多少个场景才允许再次使用同一几何骨架，防止单调 */
@@ -69,42 +82,63 @@ export interface ArchetypeRule {
 export const ARCHETYPE_RULES: Record<SemanticBeatIntent, ArchetypeRule> = {
   'hook-overview': {
     intent: 'hook-overview',
+    block: 'BentoDeck2Plus3',
     preferredLayouts: ['hero-center-to-dock', 'bento-2plus3-deck'],
     transitionIn: 'z-drop',
     cooldownScenes: 4,
   },
   'parallel-fanout': {
     intent: 'parallel-fanout',
+    block: 'SplitFanOut',
     preferredLayouts: ['split-root-fanout-1to3', 'center-flip-to-radial-star'],
     transitionIn: 'camera-dive-morph',
     cooldownScenes: 2,
   },
   'pain-to-reversal': {
     intent: 'pain-to-reversal',
+    block: 'FlipSlab3D+StarBurstTopology',
     preferredLayouts: ['center-flip-to-radial-star'],
     transitionIn: 'flip-3d-16f',
     cooldownScenes: 2,
   },
   'iterative-loop': {
     intent: 'iterative-loop',
+    block: 'OrbitLoopRing',
     preferredLayouts: ['orbit-quadrant-loop'],
     transitionIn: 'whip-pan-match',
     cooldownScenes: 3,
   },
   'staged-gates': {
     intent: 'staged-gates',
+    block: 'MilestoneGateTrack',
     preferredLayouts: ['step-milestone-gates'],
     transitionIn: 'whip-pan-match',
     cooldownScenes: 3,
   },
+  'verifiable-gauge': {
+    intent: 'verifiable-gauge',
+    block: 'CircularGaugeConsole',
+    preferredLayouts: ['three-zone-spotlight'],
+    transitionIn: 'camera-dive-morph',
+    cooldownScenes: 3,
+  },
+  'official-proof': {
+    intent: 'official-proof',
+    block: 'OfficialCropWindow',
+    preferredLayouts: ['three-zone-spotlight'],
+    transitionIn: 'whip-pan-match',
+    cooldownScenes: 2,
+  },
   'copy-prompt': {
     intent: 'copy-prompt',
+    block: 'PromptConsole',
     preferredLayouts: ['three-zone-spotlight'],
     transitionIn: 'camera-dive-morph',
     cooldownScenes: 1,
   },
   'decision-summary': {
     intent: 'decision-summary',
+    block: 'BentoDeck2Plus3',
     preferredLayouts: ['bento-2plus3-deck'],
     transitionIn: 'z-drop',
     cooldownScenes: 5,
