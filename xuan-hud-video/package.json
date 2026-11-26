@@ -5,14 +5,16 @@
   "scripts": {
     "studio": "remotion studio",
     "typecheck": "tsc --noEmit",
-    "still": "remotion still src/index.ts",
-    "preview": "remotion render src/index.ts --scale=1 --crf=20 --concurrency=8",
-    "render:4k": "remotion render src/index.ts --scale=2 --crf=18 --max-rate=18M --buffer-size=36M --concurrency=8",
-    "audio:normalize": "bash scripts/normalize-audio.sh",
-    "qc": "bash scripts/qc.sh",
+    "test": "node scripts/verify-srt-catalog.mjs",
     "lint:gates": "node scripts/lint-gates.mjs",
     "check": "tsc --noEmit && node scripts/lint-gates.mjs && node scripts/verify-srt-catalog.mjs",
-    "test": "node scripts/verify-srt-catalog.mjs"
+    "still": "remotion still src/index.ts",
+    "sample": "remotion render src/index.ts --scale=1 --crf=20 --concurrency=8 --frames=0-1269",
+    "preview": "remotion render src/index.ts --scale=1 --crf=20 --concurrency=8",
+    "render:4k": "remotion render src/index.ts --scale=2 --crf=18 --max-rate=18M --buffer-size=36M --concurrency=8",
+    "qc": "bash scripts/qc.sh",
+    "regression:v31": "bash scripts/regression-v31.sh",
+    "motion-strip": "bash scripts/motion-strip.sh"
   },
   "dependencies": {
     "react": "^19.0.0",

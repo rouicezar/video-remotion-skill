@@ -23,16 +23,17 @@ description: >-
 1. **官网局部证据采集与锐度硬检**：使用 Chrome Headless 深色模式 `3×` DPI（`--force-dark-mode --enable-features=WebContentsForceDark --force-device-scale-factor=3`）**仅截取核心标题与 1–2 行关键结论局部**（去净导航栏与侧栏，严禁截取整页密密麻麻小字段落）；落盘后立即执行 `sips -g pixelWidth` 校验，确保 **`原图宽 ≥ 容器逻辑宽 × 2`**，不达标则改为 1:1 矢量深色 UI 组件精绘。
 2. 编写核心代表章节组件，直接通过 `npx remotion still` 抽取 **5–7 张真实场景静帧**提交用户验收构图、立体层次与手机端字号可读性。
 
-### Step 3 · 30–40s 动效样片快速验收（必经用户确认）
-1. 组合前 2–3 个已验收章节组件，挂载原声与组件内聚微音效，以预览分辨率（`1920×1280`，`--scale=1`）快速渲染 30–40 秒动效样片。
-2. 提交用户确认**物理阻尼手感、口播卡点精度、扫光融合度与音效平衡**，通过后再横向扩写剩余章节。
+### Step 3 · 从正式全片单源入口截取 30–40s 动效样片验收（必经用户确认）
+1. **单源入口铁律**：正式全片入口（`src/episodes/<slug>/EpisodeFull.tsx`）即唯一时间线，严禁另建分叉样片入口；前 2–3 章完成后直接通过 `npm run sample -- Episode-<Name> <输出.mp4>`（`--frames=0-N`）从全片时间线截取 30–40 秒预览样片，**严格原样挂载用户提供的原始口播音频（严禁做响度标准化、变速或剪辑）**。
+2. 提交用户确认四大视觉维度（**画面层级 / 组件 / 动效 / 演绎方式**）与 V3.1 批准标杆（`v3.1-approved-sample`）对齐，通过后批准段直接留在全片中，横向扩写剩余章节。
 
-### Step 4 · 全片分章实现 + 渲染前全章静帧门禁（Pre-Render Gate）
-1. 按相同颗粒度独立实现中段、后段与结尾全部 `SceneXX.tsx`，严禁中后段降级为纯文字卡片堆砌。
-2. 执行 `npx tsc --noEmit` 确保零类型错误，并用 `remotion still` 批量输出覆盖**前、中、后、尾全部章节**的关键微拍静帧，对照 [approval-gates.md](./references/approval-gates.md) 逐条核验；**任意一项 FAIL 必须先修复重检，严禁带病启动 4K 渲染**。
+### Step 4 · 全片分章实现 + 逐章动态对照与门禁（Pre-Render Gate）
+1. 按相同颗粒度独立实现中段、后段与结尾全部 `SceneXX.tsx`（单文件 `≤ 250` 行）并接入同一条 `EpisodeFull.tsx` 时间线，严禁中后段降级为纯文字卡片堆砌。
+2. 执行 `npm run check`（`tsc` + `lint-gates.mjs` + SRT 锚点单测）确保零违规；**严禁中后段只审静帧**——除关键微拍静帧外，必须对中后段各新章节及跨章衔接点以 1920×1280 快速预览 + `npm run motion-strip` 生成 8 帧连续动态条，对照 V3.1 标杆核验入场阻尼、翻转干脆度、重音卡点与无叠影衔接。
+3. **共享组件变更回归铁律**：凡修改过 `src/engine/` 共享底层组件，必须执行 `npm run regression:v31` 生成与批准版 V3.1 的并排对照图并实检无退化，方可进入 4K 渲染。
 
-### Step 5 · 真 4K 成片渲染 + 终审交付 + 强制复盘
-1. 启动真 4K（`3840×2560`）标准编码渲染；完成后运行 `ffprobe` 校验流参数并抽取前/中/后/尾 4 帧实检。
+### Step 5 · 真 4K 成片渲染 + 连续衔接复看 + 强制复盘
+1. 对唯一全片入口启动真 4K（`3840×2560`）标准编码渲染；完成后运行 `npm run qc` 生成 `qc-report.md`，并对最终成片的关键章节衔接点做连续动态复看。
 2. 交付成片后，立即按模板向 [retrospective-log.md](./references/retrospective-log.md) 追加本期复盘与下期实验项。
 
 ---
@@ -79,9 +80,10 @@ description: >-
   - 颜色切换全量使用连续 RGB 插值（`mixRgb`），**严禁 `val > 0.5 ? colorA : colorB` 布尔硬切跳色**；
   - 边框恒定 `borderWidth: 2`（严禁动态改边框宽度引发布局 1px 抖动）；列表焦点切换采用**行内连续 RGB 填充**（严禁跨行间空隙的独立滑块）；
   - SVG 连线起点与终点必须贴合节点几何外边缘（圆周切点或矩形边中点），且当绘制进度 `<= 0.02` 时设 `opacity: 0` 消除 `strokeLinecap="round"` 残余圆点。
-- **声画内聚微音效（Co-located Foley SFX）**：
-  - 公共音效统一存放在 `public/sfx/`（或剧集独立音效目录），包含 6 类低音量拟声：`drop`（落卡 `0.14`）、`deal`（发卡 `0.13`）、`flow`（流光 `0.12`）、`pop`（弹出 `0.11`）、`flip`（翻卡 `0.16`）、`whoosh`（推镜/形变 `0.15`）。
-  - **禁止在全片入口末尾手工维护全局帧偏移算式表**：音效组件必须封装在各场景/动效原语内部，与动画触发帧共用同一个时间变量；若连续音效间隔 `< 8` 帧，需错开或递减单次音量（`×0.75`）防止同相叠加爆音。
+- **声画内聚微音效（Co-located Foley SFX · 4 类固定 -16 dB）**：
+  - **口播音频原样使用铁律**：直接使用用户提供的原始口播音频，保持原音量、语速、停顿与时序，**严禁做响度标准化篡改**。
+  - 公共音效严格收敛为 **4 类**（存于 `public/engine/sfx/`）：`enter`（入场/落卡）、`focus`（点亮/弹出）、`flip`（3D 翻转）、`transition`（推镜/形变/流光切场）。
+  - **全部微音效统一固定 `-16 dB`（`SFX_FIXED_VOLUME = 0.1585`，不做自适应音量）**；通过 `<Sfx>` / `<SfxGroup>` 封装在组件内部与动画触发帧同源绑定，禁止根入口末尾手写全局帧偏移表。
 
 ---
 
@@ -90,9 +92,9 @@ description: >-
 - **共享引擎层（新剧集唯一允许 import 的基础设施 · 13 大异构 2.5D 积木全集）**：
   - 统一入口：[src/engine/index.ts](file:///Users/rouice/视频探索/xuan-hud-video/src/engine/index.ts)（含 `CRISP_SPRING`、`mixRgb`、`<PhysicalGlass3D>`、`<Stage>`、`<CameraRig>`、`<FlipSlab3D>`、`<SfxGroup>`、SRT 锚点引擎 `srt.ts`、五维目录与防重编排器 `catalog/index.ts`）
   - **13 大 2.5D 几何积木库**（`src/engine/blocks/`）：`BentoDeck2Plus3`、`SplitFanOut`、`StarBurstTopology`、`OrbitLoopRing`、`MilestoneGateTrack`、`CircularGaugeConsole`、`OfficialCropWindow`、`PromptConsole`、`VersusCompareArena`、`DarkCodeTerminal`、`HorizontalTimelineTrack`、`HeroMetricSpotlight`、`FunnelFilterStack`
-  - 引擎材质与积木画廊：[EngineGallery.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/engine/EngineGallery.tsx)；已验收 V3.1 动效样片标杆（Tag `v3.1-approved-sample`）：[SampleMotionV3.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/episodes/agy-slash-commands/SampleMotionV3.tsx)
+  - 引擎材质与积木画廊：[EngineGallery.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/engine/EngineGallery.tsx)；唯一单源全片入口（样片由 `--frames=0-1269` 直接截取，标杆 Tag `v3.1-approved-sample`）：[EpisodeFull.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/episodes/agy-slash-commands/EpisodeFull.tsx)
   - 色彩、画幅与矢量品牌库：[tokens.ts](file:///Users/rouice/视频探索/xuan-hud-video/src/design/tokens.ts)、[BrandLogos.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/design/BrandLogos.tsx)
-  - 自动化校验与质检：`npm run check`（`scripts/lint-gates.mjs`）、`npm run audio:normalize`（`scripts/normalize-audio.sh`）、`npm run qc`（`scripts/qc.sh`）
+  - 自动化校验、回归与动态复核：`npm run check`（`scripts/lint-gates.mjs`）、`npm run sample`（从全片截样片）、`npm run regression:v31`（共享组件改动必跑 V3.1 并排回归）、`npm run motion-strip`（8 帧动态连拍条）、`npm run qc`（`scripts/qc.sh`）
 - **历史对照（仅供参考分镜创意，含旧版低清图/小字/手抄音效表等已知违规，严禁照抄代码结构或直接 import）**：
   - 第 1 期 75 分旧单体实现：[AgyV2FullVideo.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/compositions/AgyV2FullVideo.tsx)
 - **已归档淘汰模块（位于 `xuan-hud-video/legacy/`，不在编译链，严禁调用）**：`generate_hud_video.py`、`UniversalVideo.tsx`、`Chrome.tsx`（`HudFrame`）、`components/moves/*`。
