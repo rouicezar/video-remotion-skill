@@ -72,7 +72,8 @@ export const Scene03FlipStarBurst: React.FC = () => {
             { label: '任务 01', state: '进行中', w: q1, d: 0 },
             { label: '任务 02', state: '排队等待', w: q2, d: 0 },
             { label: '任务 03', state: '排队等待', w: q3, d: 0 },
-            { label: '长任务…', state: '上下文溢出', w: ctxBoom, d: ctxBoom },
+            // 零提前剧透：口播未讲到 31.4s 前仅显示中性待命文案，绝不提前以半透明挂出“上下文溢出”
+            { label: '任务 04', state: ctxBoom > 0.15 ? '上下文溢出' : '排队待命', w: ctxBoom, d: ctxBoom },
           ].map((slot) => (
             <div
               key={slot.label}
@@ -80,11 +81,11 @@ export const Scene03FlipStarBurst: React.FC = () => {
                 padding: '26px 24px',
                 borderRadius: 18,
                 backgroundColor: `rgba(255,255,255,${(0.03 + slot.w * 0.05).toFixed(3)})`,
-                border: `2px solid ${mixRgb([72, 84, 110], [Math.round(245 - 10 * slot.d), Math.round(166 - 79 * slot.d), Math.round(35 + 52 * slot.d)], slot.w * 0.85)}`,
+                border: `2px solid ${mixRgb([72, 84, 110], [Math.round(245 - 11 * slot.d), Math.round(166 - 99 * slot.d), Math.round(35 + 18 * slot.d)], slot.w * 0.85)}`,
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 12,
-                opacity: 0.38 + slot.w * 0.62,
+                opacity: 0.35 + slot.w * 0.65,
               }}
             >
               <span style={{ fontFamily: FONTS.mono, fontSize: 24, color: '#9AA8C0' }}>{slot.label}</span>

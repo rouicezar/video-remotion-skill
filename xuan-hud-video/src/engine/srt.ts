@@ -148,3 +148,39 @@ export function auditBeatGaps(
 
   return { ok: violations.length === 0, maxGapSec: Number(maxObserved.toFixed(2)), violations };
 }
+
+export interface TimelineSegmentSpec {
+  id: string;
+  startSec: number;
+  endSec: number;
+}
+
+/**
+ * 引擎级时间轴连续性硬门禁（封死 Scene 拼接漏秒/错位漏洞）：
+ * 检查首场是否从 0s 开始、任意相邻两场是否存在 > maxToleranceSec 的断档或重叠，违者直接抛错阻断渲染！
+ */
+export function validateTimelineContinuity(
+  segments: TimelineSegmentSpec[],
+  maxToleranceSec = 0.06
+): void {
+  if (segments.length === 0) throw new Error('[Timeline Error] 时间轴不能为空');
+  if (Math.abs(segments[0].startSec) > maxToleranceSec) {
+    throw new Error(`[Timeline Error] 首场 "${segments[0].id}" 起点为 ${segments[0].startSec}s，必须从 0s 开始`);
+  }
+  for (let i = 0; i < segments.length; i++) {
+    const cur = segments[i];
+    if (cur.endSec <= cur.startSec) {
+      throw new Error(`[Timeline Error] 场景 "${cur.id}" 时长非法 (${cur.startSec}s -> ${cur.endSec}s)`);
+    }
+    if (i > 0) {
+      const prev = segments[i - 1];
+      const gap = cur.startSec - prev.endSec;
+      if (Math.abs(gap) > maxToleranceSec) {
+        const kind = gap > 0 ? `缺失断档 +${gap.toFixed(2)}s` : `交叉重叠 ${gap.toFixed(2)}s`;
+        throw new Error(
+          `[Timeline Continuity Fail] "${prev.id}" (${prev.endSec}s) 与 "${cur.id}" (${cur.startSec}s) 之间存在 ${kind}，严禁带错位渲染！`
+        );
+      }
+    }
+  }
+}

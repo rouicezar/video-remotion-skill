@@ -6,11 +6,11 @@ import { AGY_COMMANDS_SUBTITLES } from '../../data/agyCommandsSubtitles';
 import { createSceneBeatSolver, PromptConsole, resolveAnchorSec, Stage } from '../../engine';
 
 // 场景起止边界与内部所有微拍均由 SRT 文本锚点自动反查
-const SCENE_START_SEC = resolveAnchorSec(AGY_COMMANDS_SUBTITLES, '那要用呢') - 0.06;
-const SCENE_END_SEC = resolveAnchorSec(AGY_COMMANDS_SUBTITLES, '那第二种情况呢');
-export const AGY_SCENE04_FRAMES = Math.round((SCENE_END_SEC - SCENE_START_SEC) * FPS);
+export const SCENE04_START_SEC = resolveAnchorSec(AGY_COMMANDS_SUBTITLES, '那要用呢') - 0.06;
+export const SCENE04_END_SEC = resolveAnchorSec(AGY_COMMANDS_SUBTITLES, '那第二种情况呢');
+export const AGY_SCENE04_FRAMES = Math.round((SCENE04_END_SEC - SCENE04_START_SEC) * FPS);
 
-const beats = createSceneBeatSolver(AGY_COMMANDS_SUBTITLES, SCENE_START_SEC, SCENE_END_SEC, FPS);
+const beats = createSceneBeatSolver(AGY_COMMANDS_SUBTITLES, SCENE04_START_SEC, SCENE04_END_SEC, FPS);
 const LOCAL_SUBTITLES = beats.localSubtitles();
 
 /** 供正式全片时间线 `EpisodeFull.tsx` 直接挂载的纯内容层（无重复 Stage/Audio） */
@@ -46,7 +46,7 @@ export const AgySwarmPromptScene: React.FC<{ withVoiceover?: boolean }> = ({ wit
     {withVoiceover && (
       <Audio
         src={staticFile('assets_agy/agy_commands.wav')}
-        startFrom={Math.round(SCENE_START_SEC * FPS)}
+        startFrom={Math.round(SCENE04_START_SEC * FPS)}
         volume={1}
       />
     )}
