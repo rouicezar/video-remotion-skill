@@ -105,12 +105,13 @@ export const VersusCompareArena: React.FC<{
                     key={pt.text}
                     style={{
                       padding: '18px 24px',
-                      borderRadius: 16,
-                      backgroundColor: 'rgba(234, 67, 53, 0.08)',
-                      border: `1.5px solid ${mixRgb([92, 92, 92], loseRgb, 0.52)}`,
+                      borderRadius: 14,
+                      backgroundColor: '#1C1E22',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      borderLeft: `3px solid ${mixRgb(loseRgb, loseRgb, 1)}`,
                       fontSize: 29,
                       fontWeight: WEIGHTS.light,
-                      color: '#E2E8F2',
+                      color: '#D8DCE3',
                       letterSpacing: 1,
                       opacity: pp,
                       transform: `translate3d(0, ${((1 - pp) * 16).toFixed(1)}px, 0)`,
@@ -186,9 +187,10 @@ export const VersusCompareArena: React.FC<{
                     key={pt.text}
                     style={{
                       padding: '18px 24px',
-                      borderRadius: 16,
-                      backgroundColor: `rgba(${winRgb[0]}, ${winRgb[1]}, ${winRgb[2]}, ${(0.07 + winShift * 0.08).toFixed(3)})`,
-                      border: `1.5px solid ${mixRgb([92, 128, 116], winRgb, 0.4 + winShift * 0.6)}`,
+                      borderRadius: 14,
+                      backgroundColor: '#1C1E22',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      borderLeft: `3px solid ${mixRgb(winRgb, winRgb, 1)}`,
                       fontSize: 29,
                       fontWeight: WEIGHTS.light,
                       color: COLORS.white,

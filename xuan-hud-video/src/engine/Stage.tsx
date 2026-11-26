@@ -42,8 +42,6 @@ export const Stage: React.FC<StageProps> = ({
 
   const accent: Rgb = theme?.accentRgb ?? [245, 166, 35];
   const [ar, ag, ab] = accent;
-  const coolGlow = theme?.coolGlowRgba ?? 'rgba(62, 102, 180, 0.24)';
-  const warmGlow = theme?.warmGlowRgba ?? `rgba(${ar}, ${ag}, ${ab}, 0.15)`;
   const watermark = theme?.watermark;
 
   return (
@@ -53,12 +51,10 @@ export const Stage: React.FC<StageProps> = ({
         height: '100%',
         position: 'relative',
         overflow: 'hidden',
-        backgroundColor: '#0C1018',
-        backgroundImage: [
-          `radial-gradient(ellipse 62% 52% at 22% 24%, ${coolGlow} 0%, transparent 66%)`,
-          `radial-gradient(ellipse 58% 50% at 78% 70%, ${warmGlow} 0%, transparent 62%)`,
-          'radial-gradient(ellipse 88% 78% at 50% 48%, #151B28 0%, #0C1018 70%, #07090E 100%)',
-        ].join(', '),
+        // 纯中性深炭黑工作室底色（R≈G≈B）：彻底清除左上蓝雾与右下橙雾，杜绝任何背景彩光污染前景组件
+        backgroundColor: '#0A0B0D',
+        backgroundImage:
+          'radial-gradient(ellipse 76% 68% at 50% 42%, #15171B 0%, #0D0E11 62%, #08090B 100%)',
         fontFamily: FONTS.sans,
         fontWeight: WEIGHTS.light,
         fontSynthesis: 'none',
@@ -68,7 +64,7 @@ export const Stage: React.FC<StageProps> = ({
         boxSizing: 'border-box',
       }}
     >
-      {/* Plane 1A: 远景 68° 透视地面网格（静止，编码器友好） */}
+      {/* Plane 1A: 远景 68° 纯中性白灰透视地面网格（零蓝色偏） */}
       <div
         aria-hidden
         style={{
@@ -79,7 +75,7 @@ export const Stage: React.FC<StageProps> = ({
           height: 620,
           perspective: 900,
           pointerEvents: 'none',
-          opacity: 0.4,
+          opacity: 0.34,
         }}
       >
         <div
@@ -89,10 +85,10 @@ export const Stage: React.FC<StageProps> = ({
             transform: 'rotateX(68deg)',
             transformOrigin: 'center bottom',
             backgroundImage:
-              'linear-gradient(rgba(148,175,220,0.16) 1px, transparent 1px), linear-gradient(90deg, rgba(148,175,220,0.16) 1px, transparent 1px)',
+              'linear-gradient(rgba(255,255,255,0.11) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.11) 1px, transparent 1px)',
             backgroundSize: '76px 76px',
-            WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.26) 55%, transparent 92%)',
-            maskImage: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.26) 55%, transparent 92%)',
+            WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.24) 55%, transparent 92%)',
+            maskImage: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.24) 55%, transparent 92%)',
           }}
         />
       </div>

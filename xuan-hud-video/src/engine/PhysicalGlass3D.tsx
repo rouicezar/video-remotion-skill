@@ -4,14 +4,14 @@ import { clamp01, mixRgb, Rgb } from './motion';
 
 export interface PhysicalGlass3DProps {
   children: React.ReactNode;
-  /** 0..1 连续激活权重，驱动侧壁导光与顶面棱光 */
+  /** 0..1 连续激活权重，仅精准驱动顶部 2px 导光棱线与细边框，严禁污染整块玻璃底色与厚侧壁 */
   active?: number;
-  /** 主强调色 RGB，默认琥珀金 [245, 166, 35] */
+  /** Chrome 四色点睛 RGB（橙/蓝/红/绿），默认橙 [245, 166, 35] */
   accentRgb?: Rgb;
   radius?: number;
-  /** 实体板材垂直厚度像素（默认 15px，0 表示平面） */
+  /** 实体板材垂直厚度像素（默认 15px） */
   slabPx?: number;
-  /** 侧向挤出偏移像素（正值露右侧壁，负值露左侧壁，让 2.5D 斜切厚度一眼可见） */
+  /** 侧向挤出偏移像素（正值露右侧壁，负值露左侧壁） */
   extrudeX?: number;
   padding?: React.CSSProperties['padding'];
   /** 扫光速度（帧推进系数），设 0 关闭动态扫光 */
@@ -22,13 +22,11 @@ export interface PhysicalGlass3DProps {
 }
 
 /**
- * 真·双层实体挤出 2.5D/3D 磨砂玻璃砖（PhysicalGlass3D v2.1）：
- * 用明确的四层明暗物理结构表现“看得见的板材厚度”，绝不用一条淡线糊弄：
- * 1. Ground Shadow（舞台地面落影）：深距悬浮投影，把整块厚砖托离背景；
- * 2. Extruded Bevel Sidewall（高辨识度实体厚侧壁）：多层无缝阶梯挤出 `(extrudeX, slabPx)`，
- *    采用明显亮于暗背景的金属冷钢/主题色导光渐变 + 拐角高光带 + 清晰底棱线；
- * 3. Chamfer Rim（顶面与侧壁交界亮棱）：顶面玻璃底边与侧壁顶边形成清晰折角分界；
- * 4. Etched Top Face（顶面磨砂玻璃）：内置噪点层 + 置于文字上方（zIndex: 10）的折射扫光。
+ * 零颜色污染 · 纯中性钛灰 2.5D 实体玻璃砖（PhysicalGlass3D v3）：
+ * 严格遵循暗黑界面 60-30-10 克制美学：
+ * 1. 面板底色 & 16px 实体厚侧壁永远保持 100% 纯中性石墨/钛灰金属质感（R=G=B），绝不把大面积板材染成红/绿/蓝/橙色雾；
+ * 2. Chrome 四色（`accentRgb`）仅克制地落在「顶部 2px 锐利导光棱线」与「激活时极细的 1.5px 边线」上，
+ *    彻底根除背景串色、彩色外发光染缸与红+蓝偏紫问题。
  */
 export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
   children,
@@ -47,19 +45,17 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
   const a = clamp01(active);
   const [ar, ag, ab] = accentRgb;
 
-  // 顶面玻璃外框：采用纯中性无色偏灰（R=G=B）与 accentRgb 混合，彻底杜绝“红 + 蓝灰 = 紫色”光学偏色！
-  const topBorderRgb = mixRgb([206, 206, 206], accentRgb, 0.28 + a * 0.72);
+  // 顶面细边框：静息为干净银灰，激活时克制点亮为纯正 accentRgb（无外溢彩雾）
+  const topBorderRgb = mixRgb([84, 86, 90], accentRgb, a * 0.85);
   const topBorderColor = topBorderRgb
     .replace('rgb(', 'rgba(')
-    .replace(')', `, ${(0.48 + a * 0.48).toFixed(3)})`);
+    .replace(')', `, ${(0.52 + a * 0.44).toFixed(3)})`);
 
-  // 实体侧壁（厚度切面）：同样用纯中性灰作为基底，确保红/橙/绿/蓝四色无论在何种激活度下都保持绝对纯正色相
-  const wallHighlight = mixRgb([106, 106, 106], accentRgb, 0.26 + a * 0.64);
-  const wallBody = mixRgb([62, 62, 62], [Math.round(ar * 0.72), Math.round(ag * 0.68), Math.round(ab * 0.62)], 0.24 + a * 0.62);
-  const wallShade = mixRgb([36, 36, 36], [Math.round(ar * 0.44), Math.round(ag * 0.4), Math.round(ab * 0.36)], 0.22 + a * 0.56);
-  const wallBottomRim = mixRgb([156, 156, 156], accentRgb, 0.28 + a * 0.68)
-    .replace('rgb(', 'rgba(')
-    .replace(')', `, ${(0.55 + a * 0.38).toFixed(3)})`);
+  // 16px 实体厚侧壁：100% 纯中性阳极氧化钛金属/烟熏玻璃灰阶（完全无彩色污染，高辨识度实体厚度）
+  const wallHighlight = mixRgb([96, 98, 102], [122, 124, 128], a);
+  const wallBody = mixRgb([58, 60, 64], [74, 76, 80], a);
+  const wallShade = mixRgb([34, 35, 38], [44, 46, 50], a);
+  const wallBottomRim = `rgba(182, 184, 190, ${(0.28 + a * 0.16).toFixed(3)})`;
 
   const sweepPos =
     sheenPulse !== undefined
@@ -68,9 +64,7 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
         ? ((frame * sheenSpeed) % 260) - 70
         : -999;
 
-  // 6 层密集微步挤出，确保任意斜角 `(extrudeX, slabPx)` 圆角侧壁 100% 实心平滑无锯齿断层
   const steps = slabPx > 0 ? 6 : 0;
-
   const padLeft = extrudeX < 0 ? -extrudeX : 0;
   const padRight = extrudeX > 0 ? extrudeX : 0;
 
@@ -86,7 +80,7 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
         ...style,
       }}
     >
-      {/* Layer 0: 地面悬浮落影 + 导光底辉 */}
+      {/* Layer 0: 纯黑深距悬浮落影（零彩色染雾外溢） */}
       {slabPx > 0 && (
         <div
           aria-hidden
@@ -97,18 +91,14 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
             right: padRight - extrudeX,
             bottom: 0,
             borderRadius: radius,
-            boxShadow: [
-              `0 28px 54px -6px rgba(0, 0, 0, 0.88)`,
-              `0 10px 20px rgba(0, 0, 0, 0.75)`,
-              `0 8px ${(42 * a).toFixed(0)}px rgba(${ar}, ${ag}, ${ab}, ${(0.28 * a).toFixed(3)})`,
-            ].join(', '),
+            boxShadow: '0 26px 52px -8px rgba(0, 0, 0, 0.9), 0 10px 20px rgba(0, 0, 0, 0.72)',
             pointerEvents: 'none',
             zIndex: 0,
           }}
         />
       )}
 
-      {/* Layer 1: 实心连续挤出 2.5D 厚侧壁（左右正负 extrudeX 完全镜像对称） */}
+      {/* Layer 1: 实心连续挤出纯中性钛金属厚侧壁 */}
       {Array.from({ length: steps }).map((_, idx) => {
         const t = (idx + 1) / steps;
         const isBottomEdge = idx === steps - 1;
@@ -131,7 +121,7 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
               borderWidth: isBottomEdge ? 1.5 : 0,
               borderStyle: 'solid',
               borderColor: wallBottomRim,
-              boxShadow: isBottomEdge ? 'inset 0 -2px 4px rgba(0, 0, 0, 0.45)' : 'none',
+              boxShadow: isBottomEdge ? 'inset 0 -2px 4px rgba(0, 0, 0, 0.5)' : 'none',
               pointerEvents: 'none',
               zIndex: 1,
             }}
@@ -139,7 +129,7 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
         );
       })}
 
-      {/* Layer 2: 顶层磨砂蚀刻玻璃主面板 */}
+      {/* Layer 2: 顶层纯中性深石墨磨砂主面板（零背景彩色染缸） */}
       <div
         style={{
           position: 'relative',
@@ -150,16 +140,14 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
           borderWidth: 2,
           borderStyle: 'solid',
           borderColor: topBorderColor,
-          backgroundColor: `rgba(16, 21, 33, ${(0.92 + a * 0.04).toFixed(3)})`,
-          backgroundImage: `linear-gradient(152deg, rgba(255,255,255,${(0.14 + a * 0.07).toFixed(3)}) 0%, rgba(155,180,220,0.03) 48%, rgba(${ar},${ag},${ab},${(0.03 + a * 0.12).toFixed(3)}) 100%)`,
-          backdropFilter: 'blur(18px) saturate(1.25)',
-          WebkitBackdropFilter: 'blur(18px) saturate(1.25)',
+          backgroundColor: '#15171A',
+          backgroundImage:
+            'linear-gradient(155deg, rgba(255,255,255,0.085) 0%, rgba(255,255,255,0.015) 45%, rgba(0,0,0,0.12) 100%)',
           boxShadow: [
-            `inset 0 1.5px 0 rgba(255, 255, 255, ${(0.45 + a * 0.18).toFixed(3)})`,
-            `inset 0 -1.5px 0 rgba(255, 255, 255, ${(0.18 + a * 0.2).toFixed(3)})`,
-            `0 2px 3px rgba(0, 0, 0, 0.55)`,
+            `inset 0 1.5px 0 rgba(255, 255, 255, ${(0.28 + a * 0.14).toFixed(3)})`,
+            'inset 0 -1px 0 rgba(255, 255, 255, 0.08)',
+            '0 2px 3px rgba(0, 0, 0, 0.58)',
           ].join(', '),
-          textShadow: '0 1px 2px rgba(4, 7, 14, 0.6)',
           zIndex: 2,
         }}
       >
@@ -171,14 +159,14 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
             inset: 0,
             backgroundImage: `url(${staticFile('engine/noise.png')})`,
             backgroundSize: '180px 180px',
-            opacity: 0.045,
+            opacity: 0.04,
             mixBlendMode: 'overlay',
             pointerEvents: 'none',
             zIndex: 1,
           }}
         />
 
-        {/* Plane B: 顶部折射高光棱线 */}
+        {/* Plane B: 顶部 2.5px 精准 Chrome 语义导光棱线（唯一的载体彩色点睛位） */}
         <svg
           aria-hidden
           width="100%"
@@ -188,13 +176,14 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
         >
           <defs>
             <linearGradient id={`rim-${uid}`} x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="rgba(255,255,255,0.06)" />
-              <stop offset="35%" stopColor={`rgba(255,255,255,${(0.52 + a * 0.25).toFixed(2)})`} />
-              <stop offset="72%" stopColor={`rgba(${ar},${ag},${ab},${(0.28 + a * 0.5).toFixed(2)})`} />
-              <stop offset="100%" stopColor="rgba(255,255,255,0.05)" />
+              <stop offset="0%" stopColor="rgba(255,255,255,0.04)" />
+              <stop offset="22%" stopColor={`rgba(${ar},${ag},${ab},${(0.18 + a * 0.82).toFixed(2)})`} />
+              <stop offset="50%" stopColor={`rgba(${ar},${ag},${ab},${(0.28 + a * 0.72).toFixed(2)})`} />
+              <stop offset="78%" stopColor={`rgba(${ar},${ag},${ab},${(0.18 + a * 0.82).toFixed(2)})`} />
+              <stop offset="100%" stopColor="rgba(255,255,255,0.04)" />
             </linearGradient>
           </defs>
-          <rect x="0" y="0" width="100%" height="2" fill={`url(#rim-${uid})`} />
+          <rect x="0" y="0" width="100%" height="2.5" fill={`url(#rim-${uid})`} />
         </svg>
 
         {/* Plane C: 实际前景内容与文字 */}
@@ -202,14 +191,14 @@ export const PhysicalGlass3D: React.FC<PhysicalGlass3DProps> = ({
           {children}
         </div>
 
-        {/* Plane D: 强制顶层折射反光扫光层（zIndex: 10，覆盖在文字正上方） */}
+        {/* Plane D: 纯白折射反光扫光层（zIndex: 10，覆盖在文字正上方） */}
         {sweepPos > -500 && (
           <div
             aria-hidden
             style={{
               position: 'absolute',
               inset: 0,
-              background: `linear-gradient(114deg, transparent ${sweepPos - 17}%, rgba(255,255,255,${(0.08 + a * 0.045).toFixed(3)}) ${sweepPos}%, transparent ${sweepPos + 17}%)`,
+              background: `linear-gradient(114deg, transparent ${sweepPos - 17}%, rgba(255,255,255,${(0.065 + a * 0.035).toFixed(3)}) ${sweepPos}%, transparent ${sweepPos + 17}%)`,
               pointerEvents: 'none',
               zIndex: 10,
             }}
