@@ -18,8 +18,8 @@ PF=$(probe v:0 pix_fmt); VC=$(probe v:0 codec_name); AC=$(probe a:0 codec_name)
 DUR=$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$VID")
 BR=$(ffprobe -v error -show_entries format=bit_rate -of default=nw=1:nk=1 "$VID")
 MBPS=$(awk "BEGIN{printf \"%.1f\", $BR/1e6}")
-# 4K 标准 10–20 Mbps（防虚胖/防糊）；1920 预览只限上限 8 Mbps
-if [ "$W" -ge 3000 ]; then LO=10; HI=20; else LO=1; HI=8; fi
+# CRF 恒定画质编码在静止暗调舞台下码率极省，主要防范 >20 Mbps 虚胖与 <0.3/1.5 Mbps 异常压糊
+if [ "$W" -ge 3000 ]; then LO=1.5; HI=20; else LO=0.3; HI=8; fi
 
 LUFS=$(ffmpeg -hide_banner -nostats -i "$VID" -vn -af ebur128=peak=true -f null - 2>&1 | awk '/Integrated loudness/{f=1} f&&/I:/{print $2; exit}')
 TP=$(ffmpeg -hide_banner -nostats -i "$VID" -vn -af ebur128=peak=true -f null - 2>&1 | awk '/True peak/{f=1} f&&/Peak:/{print $2; exit}')

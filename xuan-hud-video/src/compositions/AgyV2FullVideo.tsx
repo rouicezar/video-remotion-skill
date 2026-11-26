@@ -16,15 +16,13 @@ import {
   PythonLogo,
   TerminalCliIcon,
 } from '../design/BrandLogos';
+import { CRISP_SPRING, mixRgb, steppedGlide } from '../engine/motion';
+import { crystal } from '../engine/glass';
 import {
-  CRISP_SPRING,
   LuminousStage,
   Scene01Intro3DLayers,
   Scene02SwarmUseCases,
   Scene03FlipToSwarmTopology,
-  crystal,
-  mixRgb,
-  steppedGlide,
 } from './AgyV2MotionSample';
 
 const f = (sec: number) => Math.round(sec * FPS);

@@ -15,74 +15,11 @@ import { AGY_COMMANDS_SUBTITLES } from '../data/agyCommandsSubtitles';
 const f = (sec: number) => Math.round(sec * FPS);
 export const AGY_V2_SAMPLE_FRAMES = f(42.6); // 42.6s @ 30fps = 1278 frames
 
-/** Crisp, agile magnetic spring — fast takeoff, silky settle in ~12-14 frames (~0.42s), ZERO sluggish drag! */
-export const CRISP_SPRING = { damping: 24, stiffness: 185, mass: 0.72 };
+import { CRISP_SPRING, cubicPt, mixRgb, steppedGlide } from '../engine/motion';
+import { crystal } from '../engine/glass';
 
-/** Continuous RGB color mixer — ZERO boolean flash thresholds! */
-export function mixRgb(
-  c1: [number, number, number],
-  c2: [number, number, number],
-  t: number
-): string {
-  const k = Math.max(0, Math.min(1, t));
-  const r = Math.round(c1[0] + (c2[0] - c1[0]) * k);
-  const g = Math.round(c1[1] + (c2[1] - c1[1]) * k);
-  const b = Math.round(c1[2] + (c2[2] - c1[2]) * k);
-  return `rgb(${r},${g},${b})`;
-}
-
-/** Exact cubic Bezier point evaluator for glowing traveling light orbs along curves */
-export function cubicPt(
-  t: number,
-  p0: [number, number],
-  p1: [number, number],
-  p2: [number, number],
-  p3: [number, number]
-): [number, number] {
-  const u = 1 - t;
-  const x = u * u * u * p0[0] + 3 * u * u * t * p1[0] + 3 * u * t * t * p2[0] + t * t * t * p3[0];
-  const y = u * u * u * p0[1] + 3 * u * u * t * p1[1] + 3 * u * t * t * p2[1] + t * t * t * p3[1];
-  return [x, y];
-}
-
-/** Stepped silky dwell curve: glides cleanly 0 -> 1 -> 2 -> 3 -> 4 with crisp glide + brief calm settle */
-export function steppedGlide(frame: number, waypoints: Array<{ at: number; dur: number; target: number }>): number {
-  let val = waypoints[0].target;
-  for (let i = 1; i < waypoints.length; i++) {
-    const prev = waypoints[i - 1].target;
-    const { at, dur, target } = waypoints[i];
-    if (frame < at) return val;
-    if (frame < at + dur) {
-      return prev + (target - prev) * easeInOutCubic((frame - at) / dur);
-    }
-    val = target;
-  }
-  return val;
-}
-
-/**
- * 2.5D / 3D Extruded Physical Glass Slab Surface
- * - Top specular rim catches studio overhead key light
- * - Tangible 6px 3D extruded bottom slab edge + deep floating shadow separates Foreground Components from Background & Title!
- */
-export const crystal = (active = 0, radius = 22): React.CSSProperties => ({
-  ...glassSurface({ active, blurPx: 16, radius, opacity: 0.44 + active * 0.16 }),
-  boxSizing: 'border-box',
-  // Constant 2px border width ALWAYS — prevents 1px layout jitter!
-  borderWidth: 2,
-  borderStyle: 'solid',
-  borderColor: `rgba(${Math.round(255 - active * 10)}, ${Math.round(255 - active * 89)}, ${Math.round(255 - active * 220)}, ${(0.24 + active * 0.72).toFixed(3)})`,
-  backgroundColor: `rgba(18, 23, 35, ${(0.82 + active * 0.1).toFixed(2)})`,
-  backgroundImage: `linear-gradient(155deg, rgba(255,255,255,${(0.16 + active * 0.1).toFixed(3)}) 0%, rgba(160,185,225,0.04) 44%, rgba(245,166,35,${(0.03 + active * 0.16).toFixed(3)}) 100%)`,
-  boxShadow: [
-    'inset 0 1.5px 0 rgba(255,255,255,0.34)',
-    'inset 0 -1px 0 rgba(255,255,255,0.08)',
-    `0 6px 0 rgba(8, 11, 18, 0.94)`,
-    `0 7px 0 rgba(${Math.round(180 + active * 65)}, ${Math.round(195 - active * 29)}, ${Math.round(220 - active * 185)}, ${(0.14 + active * 0.28).toFixed(2)})`,
-    '0 26px 54px -10px rgba(0, 0, 0, 0.78)',
-    `0 0 ${(36 * active).toFixed(0)}px rgba(245, 166, 35, ${(0.34 * active).toFixed(2)})`,
-  ].join(', '),
-});
+// 原语已迁到 src/engine/，此处仅为兼容旧 import 而转出。
+export { CRISP_SPRING, cubicPt, crystal, mixRgb, steppedGlide };
 
 /**
  * Luminous Free-Stage Atmospheric Canvas (3:2 logical 1920x1280)

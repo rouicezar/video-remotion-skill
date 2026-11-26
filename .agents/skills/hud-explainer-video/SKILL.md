@@ -87,10 +87,11 @@ description: >-
 
 ## 三、工程资产与参考说明
 - **Remotion 根目录**：`/Users/rouice/视频探索/xuan-hud-video`
-- **共享基础设计层**：
-  - 色彩与字体常量：[tokens.ts](file:///Users/rouice/视频探索/xuan-hud-video/src/design/tokens.ts)
-  - 缓动与连续权重函数：[motion.ts](file:///Users/rouice/视频探索/xuan-hud-video/src/design/motion.ts)
-  - 矢量官方品牌 Logo 库（新增产品图标统一沉淀至此，严禁用 emoji 代替）：[BrandLogos.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/design/BrandLogos.tsx)
-- **历史基线参考（只读参考，新剧集请建 `src/episodes/<slug>/` 独立模块，勿直接 import 耦合）**：
-  - 第 1 期 75 分成片实现参考：[AgyV2FullVideo.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/compositions/AgyV2FullVideo.tsx)
-- **已淘汰模块（严禁调用）**：`scripts/generate_hud_video.py`、`src/compositions/UniversalVideo.tsx`、`src/design/Chrome.tsx`（`HudFrame`）、`src/components/moves/*`。
+- **共享引擎层（新剧集唯一允许 import 的基础设施）**：
+  - 统一入口：[src/engine/index.ts](file:///Users/rouice/视频探索/xuan-hud-video/src/engine/index.ts)（含 `CRISP_SPRING`、`mixRgb`、`<PhysicalGlass3D>`、`<Stage>`、`<SfxGroup>`、`<PromptConsole>`）
+  - 引擎材质与组件画廊基线：[EngineGallery.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/engine/EngineGallery.tsx)、单源章节示范：[Scene04SwarmPrompt.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/episodes/agy-slash-commands/Scene04SwarmPrompt.tsx)
+  - 色彩、画幅与矢量品牌库：[tokens.ts](file:///Users/rouice/视频探索/xuan-hud-video/src/design/tokens.ts)、[BrandLogos.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/design/BrandLogos.tsx)
+  - 自动化校验与质检：`npm run check`（`scripts/lint-gates.mjs`）、`npm run audio:normalize`（`scripts/normalize-audio.sh`）、`npm run qc`（`scripts/qc.sh`）
+- **历史对照（仅供参考分镜创意，含旧版低清图/小字/手抄音效表等已知违规，严禁照抄代码结构或直接 import）**：
+  - 第 1 期 75 分旧单体实现：[AgyV2FullVideo.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/compositions/AgyV2FullVideo.tsx)
+- **已归档淘汰模块（位于 `xuan-hud-video/legacy/`，不在编译链，严禁调用）**：`generate_hud_video.py`、`UniversalVideo.tsx`、`Chrome.tsx`（`HudFrame`）、`components/moves/*`。
