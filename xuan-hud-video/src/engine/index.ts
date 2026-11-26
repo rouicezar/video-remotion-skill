@@ -15,3 +15,8 @@ export * from './blocks/OrbitLoopRing';
 export * from './blocks/MilestoneGateTrack';
 export * from './blocks/CircularGaugeConsole';
 export * from './blocks/OfficialCropWindow';
+export * from './blocks/VersusCompareArena';
+export * from './blocks/DarkCodeTerminal';
+export * from './blocks/HorizontalTimelineTrack';
+export * from './blocks/HeroMetricSpotlight';
+export * from './blocks/FunnelFilterStack';

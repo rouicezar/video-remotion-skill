@@ -87,9 +87,10 @@ description: >-
 
 ## 三、工程资产与参考说明
 - **Remotion 根目录**：`/Users/rouice/视频探索/xuan-hud-video`
-- **共享引擎层（新剧集唯一允许 import 的基础设施）**：
-  - 统一入口：[src/engine/index.ts](file:///Users/rouice/视频探索/xuan-hud-video/src/engine/index.ts)（含 `CRISP_SPRING`、`mixRgb`、`<PhysicalGlass3D>`、`<Stage>`、`<SfxGroup>`、`<PromptConsole>`）
-  - 引擎材质与组件画廊基线：[EngineGallery.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/engine/EngineGallery.tsx)、单源章节示范：[Scene04SwarmPrompt.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/episodes/agy-slash-commands/Scene04SwarmPrompt.tsx)
+- **共享引擎层（新剧集唯一允许 import 的基础设施 · 13 大异构 2.5D 积木全集）**：
+  - 统一入口：[src/engine/index.ts](file:///Users/rouice/视频探索/xuan-hud-video/src/engine/index.ts)（含 `CRISP_SPRING`、`mixRgb`、`<PhysicalGlass3D>`、`<Stage>`、`<CameraRig>`、`<FlipSlab3D>`、`<SfxGroup>`、SRT 锚点引擎 `srt.ts`、五维目录与防重编排器 `catalog/index.ts`）
+  - **13 大 2.5D 几何积木库**（`src/engine/blocks/`）：`BentoDeck2Plus3`、`SplitFanOut`、`StarBurstTopology`、`OrbitLoopRing`、`MilestoneGateTrack`、`CircularGaugeConsole`、`OfficialCropWindow`、`PromptConsole`、`VersusCompareArena`、`DarkCodeTerminal`、`HorizontalTimelineTrack`、`HeroMetricSpotlight`、`FunnelFilterStack`
+  - 引擎材质与积木画廊：[EngineGallery.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/engine/EngineGallery.tsx)；已验收 V3.1 动效样片标杆（Tag `v3.1-approved-sample`）：[SampleMotionV3.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/episodes/agy-slash-commands/SampleMotionV3.tsx)
   - 色彩、画幅与矢量品牌库：[tokens.ts](file:///Users/rouice/视频探索/xuan-hud-video/src/design/tokens.ts)、[BrandLogos.tsx](file:///Users/rouice/视频探索/xuan-hud-video/src/design/BrandLogos.tsx)
   - 自动化校验与质检：`npm run check`（`scripts/lint-gates.mjs`）、`npm run audio:normalize`（`scripts/normalize-audio.sh`）、`npm run qc`（`scripts/qc.sh`）
 - **历史对照（仅供参考分镜创意，含旧版低清图/小字/手抄音效表等已知违规，严禁照抄代码结构或直接 import）**：
