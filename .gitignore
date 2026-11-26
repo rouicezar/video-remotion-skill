@@ -9,3 +9,4 @@ output/
 xuan-hud-video/out/
 xuan-hud-video/public/**/raw/
 xuan-hud-video/public/**/dark_raw*/
+!xuan-hud-video/public/**/sfx/*.wav

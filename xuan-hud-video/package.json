@@ -4,8 +4,12 @@
   "private": true,
   "scripts": {
     "studio": "remotion studio",
-    "render:replica": "remotion render src/index.ts ReplicaVideo ../output/01-复刻成品.mp4",
-    "render:universal": "remotion render src/index.ts UniversalVideo ../output/universal-demo.mp4"
+    "typecheck": "tsc --noEmit",
+    "still": "remotion still src/index.ts",
+    "preview": "remotion render src/index.ts --scale=1 --crf=20 --concurrency=8",
+    "render:4k": "remotion render src/index.ts --scale=2 --crf=18 --max-rate=18M --buffer-size=36M --concurrency=8",
+    "audio:normalize": "bash scripts/normalize-audio.sh",
+    "qc": "bash scripts/qc.sh"
   },
   "dependencies": {
     "react": "^19.0.0",
