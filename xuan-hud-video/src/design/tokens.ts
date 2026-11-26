@@ -30,5 +30,6 @@ export const FONTS = {
 } as const;
 
 export const FPS = 30;
+// 3:2 逻辑画布（--scale=2 → 3840×2560 真 4K）。全项目唯一画幅来源，禁止在合成里写字面量。
 export const WIDTH = 1920;
-export const HEIGHT = 1080;
+export const HEIGHT = 1280;
